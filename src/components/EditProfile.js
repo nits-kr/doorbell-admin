@@ -23,7 +23,7 @@ function EditProfile() {
   const handleImageUpload1 = (event) => {
     const file = event.target.files[0];
     setSelectedImage1(URL.createObjectURL(file));
-    setFormData({ ...formData, bannerPic1: event.target.files[0] });
+    setFormData({ ...formData, uploadImage: event.target.files[0] });
     // setImageUrl1(URL.createObjectURL(file));
   };
   const storedId = localStorage.getItem("loginId");
@@ -31,11 +31,11 @@ function EditProfile() {
   const handleOnSave = () => {
     const data = new FormData();
     data.append("userName", userName);
-    data.append("userEmail", userEmail);
-    data.append("profile_Pic", formData.uploadImage);
+    // data.append("userEmail", userEmail);
+    data.append("adminProfile", formData.uploadImage);
     axios
       .post(
-        `http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/user/editProfile/${storedId}`,
+        `http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/edit-profile/${storedId}`,
         data
       )
       .then((response) => {
@@ -158,7 +158,10 @@ function EditProfile() {
                             ) : storedPic ? (
                               <img src={storedPic} alt="" />
                             ) : (
-                              <img src="../assets/img/profile_img1.jpg" alt="" />
+                              <img
+                                src="../assets/img/profile_img1.png"
+                                alt=""
+                              />
                             )}
                           </div>
                           <div className="p-image">
@@ -199,7 +202,7 @@ function EditProfile() {
                           onChange={(e) => setUserEmail(e.target.value)}
                         />
                       </div>
-                      <div className="form-group col-12 mt-2 text-center">
+                      <div className="form-group col-12 text-center">
                         <Link
                           className="comman_btn"
                           // data-bs-toggle="modal"
@@ -207,7 +210,7 @@ function EditProfile() {
                           to=""
                           onClick={handleOnSave}
                         >
-                          Save
+                          <span>Save</span>
                         </Link>
                       </div>
                     </form>

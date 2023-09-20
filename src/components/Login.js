@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { useUserLoginMutation } from "../services/Post";
 function Login() {
   const [loginData, res] = useUserLoginMutation();
+  console.log("resp login", res);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [userNameError, setUserNameError] = useState("");
@@ -12,11 +13,11 @@ function Login() {
   const navigate = useNavigate();
   useEffect(() => {
     if (res.isSuccess) {
-      localStorage.setItem("loginId", res.data?.results?.login?._id);
+      localStorage.setItem("loginId", res.data?.results?.verifyUser?._id);
       localStorage.setItem("token", res.data?.results?.token);
       localStorage.setItem(
         "userLoginEmail",
-        res.data?.results?.login?.userEmail
+        res.data?.results?.verifyUser?.userEmail
       );
       Swal.fire({
         title: "Login Successful!",
@@ -53,7 +54,7 @@ function Login() {
 
     try {
       const response = await loginData({
-        userEmail: userName,
+        userName: userName,
         password: password,
       });
       console.log("response login", response);
@@ -78,7 +79,7 @@ function Login() {
                 <div className="row">
                   <div className="col-12 formheader mb-4">
                     <div className="text-center">
-                      <img src="../assets/img/logo1.png" alt="" />
+                      <img src="../assets/img/logo.png" alt="" />
                     </div>
                     <h1>Login for Admin Panel</h1>
                     <p>Please enter your email and password</p>
@@ -131,7 +132,7 @@ function Login() {
                             className="comman_btn"
                             onClick={handleSaveChanges}
                           >
-                            Submit
+                            <span>Submit</span>
                           </button>
                         </div>
                       </Link>

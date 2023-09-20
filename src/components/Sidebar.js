@@ -20,7 +20,7 @@ function Sidebar({ Dash }) {
           <div className="siderbar_inner">
             <div className="sidebar_logo">
               <Link to="javscript:;">
-                <img src="../assets/img/logo1.png" alt="Logo" />
+                <img src="../assets/img/logo.png" alt="Logo" />
               </Link>
             </div>
             <div className="sidebar_menus">
@@ -34,23 +34,23 @@ function Sidebar({ Dash }) {
                     <i className="fal fa-home"></i>Dashboard
                   </Link>
                 </li> */}
-                <li
-                  className={
-                    Dash === "dashboard" ? "nav-link active" : "nav-link"
-                  }
-                >
-                  <Link className="" to="/dashboard">
+                <li>
+                  <Link
+                    className={Dash === "dashboard" ? "active" : ""}
+                    to="/dashboard"
+                  >
                     <i className="fal fa-box-full"></i>Dashboard
                   </Link>
                 </li>
-                <li
-                  className={Dash === "users" ? "nav-link active" : "nav-link"}
-                >
-                  <Link className="" to="/users">
+                <li>
+                  <Link
+                    className={Dash === "users" ? "active" : ""}
+                    to="/users"
+                  >
                     <i className="fal fa-user"></i>Users Management
                   </Link>
                 </li>
-                <li
+                {/* <li
                   className={
                     Dash === "categories" ? "nav-link active" : "nav-link"
                   }
@@ -60,80 +60,29 @@ function Sidebar({ Dash }) {
                       <i className="fas fa-list-ol"></i>
                       Category Management
                     </Link>
-                    {/* <Link
-                      className={
-                        Dash === "products" ? "nav-link active" : "nav-link"
-                      }
-                      to="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const subMenu = document.querySelector("#menu-product");
-                        const icon = e.currentTarget.querySelector("i");
-                        subMenu.classList.toggle("collapse");
-                        if (subMenu.classList.contains("collapse")) {
-                          icon.classList.replace(
-                            "fa-chevron-up",
-                            "fa-chevron-down"
-                          );
-                        } else {
-                          icon.classList.replace(
-                            "fa-chevron-down",
-                            "fa-chevron-up"
-                          );
-                        }
-                      }}
-                      style={{ borderRadius: "20px 0px 0px 0px" }}
-                    >
-                      <i
-                        className="fa fa-chevron-down text-end fs-6"
-                        style={{ fontSize: "6px", marginRight: "4px" }}
-                      ></i>
-                    </Link> */}
                   </div>
-                </li>
-                {/* <ul className="sub-menu collapse" id="menu-product"> */}
-                {/* <li
-                    className={
-                      Dash === "products" ? "nav-link active" : "nav-link"
-                    }
+                </li> */}
+
+                <li>
+                  <Link
+                    className={Dash === "product-management" ? "active" : ""}
+                    to="/product-management"
                   >
-                    <Link
-                      className="ms-link"
-                      to="/products"
-                      // onClick={() => handleItemClick("products")}
-                    >
-                      <i className="fas fa-check-square"></i>
-                      <span> Product List</span>
-                    </Link>
-                  </li> */}
-                {/* </ul> */}
-                <li
-                  className={
-                    Dash === "product-management"
-                      ? "nav-link active"
-                      : "nav-link"
-                  }
-                >
-                  <Link className="ms-link " to="/product-management">
                     <i className="fas fa-cogs"></i>
-                    <span>Add New Product</span>
+                    <span>Product Management</span>
                   </Link>
                 </li>
-                <li
+                {/* <li
                   className={
                     Dash === "products" ? "nav-link active" : "nav-link"
                   }
                 >
-                  <Link
-                    className="ms-link"
-                    to="/products"
-                    // onClick={() => handleItemClick("products")}
-                  >
+                  <Link className="ms-link" to="/products">
                     <i className="fas fa-check-square"></i>
                     <span> Product List</span>
                   </Link>
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   className={
                     Dash === "brand-management" ? "nav-link active" : "nav-link"
                   }
@@ -142,41 +91,41 @@ function Sidebar({ Dash }) {
                     <i className="fas fa-cogs"></i>
                     <span>Brand Management</span>
                   </Link>
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   className={Dash === "offers" ? "nav-link active" : "nav-link"}
                 >
                   <Link className="" to="/offers">
                     <i className="fad fa-gift-card"></i>Offers Management
                   </Link>
-                </li>
-                <li
-                  className={Dash === "orders" ? "nav-link active" : "nav-link"}
-                >
-                  <Link className="" to="/orders">
+                </li> */}
+                <li>
+                  <Link
+                    className={Dash === "orders" ? " active" : ""}
+                    to="/orders"
+                  >
                     <i className="fal fa-box-full"></i>Order Management
                   </Link>
                 </li>
-                <li
+                {/* <li
                   className={Dash === "agents" ? "nav-link active" : "nav-link"}
                 >
                   <Link className="" to="/agents">
                     <i className="fal fa-users"></i>Agent Management
                   </Link>
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   className={Dash === "staff" ? "nav-link active" : "nav-link"}
                 >
                   <Link className="" to="/staff">
                     <i className="fal fa-clipboard-user"></i>Staff Management
                   </Link>
-                </li>
-                <li
-                  className={
-                    Dash === "transactions" ? "nav-link active" : "nav-link"
-                  }
-                >
-                  <Link className=" " to="/transactions">
+                </li> */}
+                <li>
+                  <Link
+                    className={Dash === "transactions" ? " active" : ""}
+                    to="/transactions"
+                  >
                     <i className="far fa-repeat-1"></i>Transaction Management
                   </Link>
                 </li>
@@ -190,7 +139,7 @@ function Sidebar({ Dash }) {
                     Management
                   </Link>
                 </li> */}
-                <li
+                {/* <li
                   className={
                     Dash === "Home-Screen-banners"
                       ? "nav-link active"
@@ -201,8 +150,8 @@ function Sidebar({ Dash }) {
                     <i className="fal fa-sign-in-alt"></i>Home Screen Banners
                     Management
                   </Link>
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   className={
                     Dash === "notification-management"
                       ? "nav-link active"
@@ -212,8 +161,8 @@ function Sidebar({ Dash }) {
                   <Link className="" to="/notification-management">
                     <i className="far fa-bell"></i>Notification Management
                   </Link>
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   className={
                     Dash === "announcement-management"
                       ? "nav-link active"
@@ -223,7 +172,7 @@ function Sidebar({ Dash }) {
                   <Link className="" to="/announcement-management">
                     <i className="far fa-bullhorn"></i> Announcement Management
                   </Link>
-                </li>
+                </li> */}
                 {/* <li
                   className={
                     Dash === "thoughts-management"
@@ -235,18 +184,15 @@ function Sidebar({ Dash }) {
                     <i className="fal fa-lightbulb-on"></i> Thoughts Management
                   </Link>
                 </li> */}
-                <li
-                  className={
-                    Dash === "content-management"
-                      ? "nav-link active"
-                      : "nav-link"
-                  }
-                >
-                  <Link className="" to="/content-management">
+                <li>
+                  <Link
+                    className={Dash === "content-management" ? " active" : ""}
+                    to="/content-management"
+                  >
                     <i className="fal fa-user-edit"></i>Content Management
                   </Link>
                 </li>
-                <li
+                {/* <li
                   className={
                     Dash === "coupanList" ? "nav-link active" : "nav-link"
                   }
@@ -254,8 +200,8 @@ function Sidebar({ Dash }) {
                   <Link className="" to="/coupanList">
                     <i className="fal fa-user-edit"></i>Coupan Management
                   </Link>
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   className={
                     Dash === "informations" ? "nav-link active" : "nav-link"
                   }
@@ -263,8 +209,8 @@ function Sidebar({ Dash }) {
                   <Link to="/informations">
                     <i className="fas fa-info"></i>Informations Management
                   </Link>
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   className={
                     Dash === "contact-us" ? "nav-link active" : "nav-link"
                   }
@@ -272,8 +218,8 @@ function Sidebar({ Dash }) {
                   <Link className="" to="/contact-us">
                     <i className="fas fa-cogs"></i>Contact us
                   </Link>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                   <div className="dropdown">
                     <button
                       className="btn btn-secondary dropdown-toggle w-100 d-flex align-items-center"
@@ -302,12 +248,15 @@ function Sidebar({ Dash }) {
                       </li>
                     </ul>
                   </div>
+                </li> */}
+                <li>
+                  <Link className={Dash === "help" ? "active" : ""} to="/help">
+                    <i className="fal fa-hands-heart"></i>Help & Support
+                  </Link>
                 </li>
-                <li
-                  className={Dash === "help" ? "nav-link active" : "nav-link"}
-                >
-                  <Link className="" to="/help">
-                    <i className="fal fa-hands-heart"></i>Help
+                <li>
+                  <Link className="dropdown-item" to="/">
+                    <i class="fal fa-sign-out-alt"></i>Logout
                   </Link>
                 </li>
               </ul>
@@ -329,7 +278,7 @@ function Sidebar({ Dash }) {
                       <i className="far fa-bell"></i>
                     </div>
                 </div> */}
-                <Link className="change_language" to="">
+                <Link className="change_language me-2" to="">
                   <img src="../assets/img/saudi_flag1.png" alt="" />
                   عربى
                 </Link>
@@ -345,7 +294,7 @@ function Sidebar({ Dash }) {
                     {storedPic ? (
                       <img src={storedPic} alt="" />
                     ) : (
-                      <img src="../assets/img/profile_img1.jpg" alt="" />
+                      <img src="../assets/img/profile_img1.png" alt="" />
                     )}
                   </button>
                   <ul

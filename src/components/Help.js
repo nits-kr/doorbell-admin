@@ -3,374 +3,139 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Sidebar from "./Sidebar";
-import { useDeleteHelpManagementListMutation } from "../services/Post";
+import {
+  useDeleteContactMutation,
+  useDeleteHelpManagementListMutation,
+  useFilterHelpListByDateQuery,
+  useGetHelpListQuery,
+  useUpdateHelpMutation,
+} from "../services/Post";
 
 function Help() {
-  const [deleteHelp, response] = useDeleteHelpManagementListMutation();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [startDate1, setStartDate1] = useState("");
+  const { data: helpAll } = useGetHelpListQuery();
+  const [deleteHelp, res] = useDeleteContactMutation();
+  const [updateHelpList] = useUpdateHelpMutation();
   const [helpList, setHelpList] = useState([]);
-  const [category, setCategory] = useState({
-    categoryNameEn: "",
-    categoryNameAr: "",
-  });
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [itemId, setItemId] = useState([]);
+  const [userName, setUserName] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
+  const [itemId2, setItemId2] = useState([]);
+  const [userName2, setUserName2] = useState("");
+  const [mobile2, setMobile2] = useState("");
+  const [email2, setEmail2] = useState("");
+  const [message2, setMessage2] = useState("");
+  const [status2, setStatus2] = useState("");
 
-  const [subCategory, setSubCategory] = useState({
-    nameEn: "",
-    nameAr: "",
-    categoryId: "",
-  });
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  axios.defaults.headers.common["x-auth-token-user"] =
-    localStorage.getItem("token");
-  const url =
-    "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/help/help/list";
-  const url2 =
-    "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/help/help/helpSearch";
-  useEffect(() => {
-    fetchHelpList();
-  }, []);
-  const fetchHelpList = async () => {
-    const { data } = await axios.post(url);
-    setHelpList(data.results.list.reverse());
-  };
-  const handleCategoryInputChange = (event) => {
-    const { name, value } = event.target;
-    setCategory({ ...category, [name]: value });
-  };
-
-  const handleSubCategoryInputChange = (event) => {
-    const { name, value } = event.target;
-    setSubCategory({ ...subCategory, [name]: value });
-  };
+  const { data: filteredHelp } = useFilterHelpListByDateQuery(
+    {
+      from: fromDate,
+      to: toDate,
+    },
+    {
+      skip: !fromDate || !toDate,
+    }
+  );
 
   useEffect(() => {
-    handleSearch1();
-  }, [searchQuery]);
+    if (filteredHelp?.results?.contactList) {
+      setHelpList(filteredHelp?.results?.contactList);
+    }
+  }, [filteredHelp]);
 
-  const handleSearch1 = async () => {
-    try {
-      const url1 = searchQuery !== "" ? url2 : url;
-      const response = await axios.post(url1, {
-        categoryName: searchQuery,
-      });
-      const { error, results } = response.data;
-      if (error) {
-        setHelpList([]);
-        Swal.fire({
-          title: "Error!",
-          // text: error.response.data,
-          text: "Error searching for products. Data is not found",
-          icon: "error",
-          confirmButtonText: "OK",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            fetchHelpList();
-          }
-        });
-        // throw new Error("Error searching for products. Data is not found.");
-      } else {
-        setHelpList(
-          searchQuery !== "" ? results?.searchData : results?.list?.reverse()
-        );
-      }
-    } catch (error) {
-      if (error.response) {
-        Swal.fire({
-          title: "Error!",
-          text: error.response.data,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      } else if (error.request) {
-        Swal.fire({
-          title: "Error!",
-          text: "Network error. Please try again later.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      } else {
-        Swal.fire({
-          title: "Error!",
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
+  // useEffect(() => {
+  //   if (helpAll) {
+  //     console.log(helpAll);
+  //     setHelpList(helpAll?.results?.contactList);
+  //   }
+  // }, [helpAll]);
+  useEffect(() => {
+    fetchHelpList(helpAll);
+  }, [helpAll]);
+
+  const fetchHelpList = (data) => {
+    if (data) {
+      setHelpList(data?.results?.contactList);
     }
   };
 
-  const userList2 = async () => {
-    if (!startDate1) return;
-    try {
-      const { data } = await axios.post(url, {
-        startDate1,
-      });
-      const filteredUsers = data?.results?.list?.filter(
-        (user) =>
-          new Date(user?.createdAt?.slice(0, 10)).toISOString().slice(0, 10) ===
-          new Date(startDate1).toISOString().slice(0, 10)
-      );
-      if (filteredUsers.length === 0) {
-        setHelpList([]);
-        await Swal.fire({
-          title: "No List Found",
-          text: "No list is available for the selected date.",
-          icon: "warning",
-          confirmButtonText: "OK",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            fetchHelpList();
-          }
-        });
-      } else if (filteredUsers.length > 0) {
-        await Swal.fire({
-          title: "List Found!",
-          text: "list is available for the selected date.",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            setHelpList(filteredUsers);
-          }
-        });
-      }
-      setHelpList(filteredUsers);
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching user list:", error);
-    }
+  const handleItem = (item) => {
+    console.log("handleItem price", item);
+    setItemId(item?._id);
+    setUserName(item?.userName || "");
+    setMobile(item?.mobileNumber || "");
+    setEmail(item?.userEmail || "");
+    setMessage(item?.descripation || []);
+    setStatus(item?.status || 0);
   };
-  useEffect(() => {
-    userList2();
-  }, [startDate1]);
 
-  const handleSearch = (e) => {
+  const handleSaveChanges = async (e) => {
     e.preventDefault();
-    axios
-      .post(url, {
-        from: startDate,
-        to: endDate,
-      })
-      .then((response) => {
-        const list = response?.data?.results?.list?.reverse();
-        if (list && list.length > 0) {
-          Swal.fire({
-            title: "List Found!",
-            text: "list is available for the selected date.",
-            icon: "success",
-            confirmButtonText: "OK",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              setHelpList(list);
-            }
-          });
-          // setHelpList(list);
-        } else {
-          setHelpList([]);
-          Swal.fire({
-            icon: "warning",
-            title: "No data found!",
-            text: "There is no list between the selected dates.",
-            confirmButtonText: "OK",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              fetchHelpList();
-            }
-          });
+    console.log("handleSaveChanges1", itemId);
+    const editHelp = {
+      id: itemId,
+      // userName: userName2,
+      // mobileNumber: mobile2,
+      // userEmail: email2,
+      status: status2,
+      // subject: message2,
+    };
+    try {
+      await updateHelpList(editHelp);
+      Swal.fire({
+        icon: "success",
+        title: "Changes Saved",
+        text: "The Status has been updated successfully.",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
         }
-      })
-      .catch((error) => {
-        console.log(error.response.data);
       });
-  };
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/help/help/createHelp",
-        {
-          categoryName: category.categoryNameEn,
-          subCategoryName: subCategory.nameEn,
-          categoryName_ar: category.categoryNameAr,
-          subCategoryName_ar: subCategory.nameAr,
-        }
-      );
-      console.log(response.data.results.helpData);
-      if (!response.data.error) {
-        alert("Saved!");
-        handleSave();
-      }
     } catch (error) {
-      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "An error occurred while updating the subcategory.",
+      });
     }
   };
-  const handleSave = async () => {
-    try {
-      const response = await axios.post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/help/help/list"
-      );
-      setHelpList(response.data.results.list.reverse());
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
   return (
     <>
       <Sidebar Dash={"help"} />
       <div className="admin_main">
         <div className="admin_main_inner">
           <div className="admin_panel_data height_adjust">
-            <div className="row help&support-management justify-content-center">
+            <div className="row user-management justify-content-center">
               <div className="col-12">
                 <div className="row mx-0">
-                  <div className="col-12 design_outter_comman shadow mb-4">
-                    <div className="row comman_header justify-content-between">
-                      <div className="col">
-                        <h2>Add New Help Category </h2>
-                      </div>
-                    </div>
-                    <form
-                      className="form-design py-4 px-3 help-support-form row align-items-end justify-content-between"
-                      onSubmit={handleSubmit}
-                    >
-                      <div className="form-group col-6">
-                        <label htmlFor="">
-                          Category (En)
-                          <span className="required-field text-danger">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="categoryNameEn"
-                          id="categoryNameEn"
-                          value={category.categoryNameEn}
-                          onChange={handleCategoryInputChange}
-                          required
-                          minLength="3"
-                        />
-                      </div>
-                      <div className="form-group col-6">
-                        <label htmlFor="">
-                          Category (Ar)
-                          <span className="required-field text-danger">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="categoryNameAr"
-                          id="categoryNameAr"
-                          value={category.categoryNameAr}
-                          onChange={handleCategoryInputChange}
-                          required
-                          minLength="3"
-                        />
-                      </div>
-                      <div className="form-group mb-0 col">
-                        <label htmlFor="">
-                          Sub Category (En)
-                          <span className="required-field text-danger">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="nameEn"
-                          id="nameEn"
-                          value={subCategory.nameEn}
-                          onChange={handleSubCategoryInputChange}
-                          required
-                          minLength="3"
-                        />
-                      </div>
-                      <div className="form-group mb-0 col">
-                        <label htmlFor="">
-                          Sub Category (Ar)
-                          <span className="required-field text-danger">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="nameAr"
-                          id="nameAr"
-                          value={subCategory.nameAr}
-                          onChange={handleSubCategoryInputChange}
-                          required
-                          minLength="3"
-                        />
-                      </div>
-                      <div className="form-group mb-0 col-auto">
-                        <button className="comman_btn2">Add</button>
-                      </div>
-                    </form>
-                  </div>
                   <div className="col-12 design_outter_comman shadow">
                     <div className="row comman_header justify-content-between">
-                      <div className="col">
-                        <h2>Help</h2>
-                      </div>
-                      <div className="col-3 Searchbox">
-                        <form
-                          className="form-design"
-                          action=""
-                          onSubmit={handleSearch1}
-                        >
-                          <div className="form-group mb-0 position-relative icons_set">
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Search"
-                              name="name"
-                              id="name"
-                              value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                            <i
-                              className="far fa-search"
-                              onClick={handleSearch1}
-                            ></i>
-                          </div>
-                        </form>
-                      </div>
                       <div className="col-auto">
-                        <input
-                          type="date"
-                          className="custom_date"
-                          value={startDate1}
-                          onChange={(e) => setStartDate1(e.target.value)}
-                        />
+                        <h2>Help &amp; Support</h2>
                       </div>
                     </div>
                     <form
                       className="form-design py-4 px-3 help-support-form row align-items-end justify-content-between"
                       action=""
-                      onSubmit={handleSearch}
                     >
                       <div className="form-group mb-0 col-5">
                         <label htmlFor="">From</label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          value={startDate}
-                          onChange={(e) => setStartDate(e.target.value)}
-                        />
+                        <input type="date" className="form-control" />
                       </div>
                       <div className="form-group mb-0 col-5">
                         <label htmlFor="">To</label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          value={endDate}
-                          onChange={(e) => setEndDate(e.target.value)}
-                        />
+                        <input type="date" className="form-control" />
                       </div>
                       <div className="form-group mb-0 col-auto">
-                        <button
-                          className="comman_btn2"
-                          disabled={startDate > endDate}
-                        >
-                          Search
+                        <button className="comman_btn">
+                          <span>Search</span>
                         </button>
                       </div>
                     </form>
@@ -381,59 +146,119 @@ function Help() {
                             <thead>
                               <tr>
                                 <th>S.No.</th>
-                                <th>Category (En)</th>
-                                <th>Category (Ar)</th>
-                                <th>Sub Category (En)</th>
-                                <th>Sub Category (Ar)</th>
+                                <th>User Name</th>
+                                <th>Mobile Number</th>
+                                <th>Email Address</th>
+                                <th>Messages</th>
+                                <th>Date</th>
+                                <th>Status</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
                             <tbody>
-                              {helpList.map((value, index) => (
-                                <tr key={index}>
-                                  <td>{index + 1}</td>
-                                  <td>{value?.categoryName}</td>
-                                  <td>{value?.categoryName_ar}</td>
-                                  <td>{value?.subCategoryName}</td>
-                                  <td>{value?.subCategoryName_ar}</td>
-                                  <td>
-                                    <Link
-                                      className="comman_btn table_viewbtn me-2"
-                                      to="/help-view"
-                                    >
-                                      View
-                                    </Link>
-                                    <Link
-                                      className="comman_btn2 table_viewbtn"
-                                      to="#"
-                                      onClick={() => {
-                                        Swal.fire({
-                                          title: "Are you sure?",
-                                          text: "You won't be able to revert this!",
-                                          icon: "warning",
-                                          showCancelButton: true,
-                                          confirmButtonColor: "#3085d6",
-                                          cancelButtonColor: "#d33",
-                                          confirmButtonText: "Yes, delete it!",
-                                        }).then((result) => {
-                                          if (result.isConfirmed) {
-                                            deleteHelp(value?._id);
-                                            Swal.fire(
-                                              "Deleted!",
-                                              `${value?.categoryName}  item has been deleted.`,
-                                              "success"
-                                            ).then(() => {
-                                              fetchHelpList();
-                                            });
-                                          }
-                                        });
-                                      }}
-                                    >
-                                      Delete
-                                    </Link>
-                                  </td>
-                                </tr>
-                              ))}
+                              {helpList?.map((item, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td>{index + 1} </td>
+                                    <td> {item?.userName} </td>
+                                    <td>{item?.mobileNumber} </td>
+                                    <td> {item?.userEmail} </td>
+                                    <td>
+                                      {item?.descripation?.slice(0, 15)}...{" "}
+                                    </td>
+                                    <td> {item?.createdAt?.slice(0, 10)} </td>
+                                    <td>
+                                      <div
+                                        className={
+                                          item?.status === "Cancelled"
+                                            ? "text-danger"
+                                            : item?.status === "Pending"
+                                            ? "text-warning"
+                                            : item?.status === "progress"
+                                            ? "text-info"
+                                            : item?.status === "Fixed"
+                                            ? "text-success"
+                                            : item?.status === "Inprogress"
+                                            ? "text-primary"
+                                            : item?.status === "Delivered"
+                                            ? "text-secondary"
+                                            : "text-default"
+                                        }
+                                        style={{
+                                          background:
+                                            item?.status === "Cancelled"
+                                              ? "#ffe5e5"
+                                              : item?.status === "Pending"
+                                              ? "#fff6e5"
+                                              : item?.status === "progress"
+                                              ? "#e5f0ff"
+                                              : item?.status === "Fixed"
+                                              ? "#e5ffe5"
+                                              : item?.status === "Inprogress"
+                                              ? "#e5e5ff"
+                                              : item?.status === "Delivered"
+                                              ? "#f3f3f3"
+                                              : "#f9f9f9",
+                                          borderRadius: "5px",
+                                          padding: "2px 5px",
+                                        }}
+                                      >
+                                        {item?.status}
+                                      </div>{" "}
+                                    </td>
+                                    <td>
+                                      <Link
+                                        className="comman_btn table_viewbtn"
+                                        // to="/help-view"
+                                        to={`/help-view/${encodeURIComponent(
+                                          JSON.stringify(item)
+                                        )}`}
+                                      >
+                                        <span>View</span>
+                                      </Link>
+                                      <Link
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#edit"
+                                        className="comman_btn table_viewbtn mx-1"
+                                        to="#"
+                                        onClick={() => handleItem(item)}
+                                      >
+                                        <span>Edit</span>
+                                      </Link>
+                                      <Link
+                                        className="comman_btn bg-danger table_viewbtn"
+                                        to="#"
+                                        onClick={() => {
+                                          Swal.fire({
+                                            title: "Are you sure?",
+                                            text: "You won't be able to revert this!",
+                                            icon: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#3085d6",
+                                            cancelButtonColor: "#d33",
+                                            confirmButtonText:
+                                              "Yes, delete it!",
+                                          }).then((result) => {
+                                            if (result.isConfirmed) {
+                                              deleteHelp(item?._id);
+                                              Swal.fire(
+                                                "Deleted!",
+                                                `${item?.userName}  item has been deleted.`,
+                                                "success"
+                                              ).then(() => {
+                                                // fetchHelpList(helpAll);
+                                                window?.location?.reload();
+                                              });
+                                            }
+                                          });
+                                        }}
+                                      >
+                                        Delete
+                                      </Link>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
                             </tbody>
                           </table>
                         </div>
@@ -442,6 +267,175 @@ function Help() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="modal fade reply_modal"
+        id="staticBackdrop"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex={-1}
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content border-0">
+            <div className="modal-header">
+              <h5 className="modal-title" id="staticBackdropLabel">
+                MESSAGES
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body py-4">
+              <div className="chatpart_main">
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
+                  ut soluta, debitis provident reiciendis architecto.
+                  Reprehenderit et labore saepe, dolor ullam commodi fugiat
+                  dolorum tempora voluptatem explicabo delectus ducimus
+                  quibusdam.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Edit Modal */}
+      <div
+        className="modal fade Edit_help Edit_modal"
+        id="edit"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex={-1}
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="staticBackdropLabel">
+                Edit
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">
+              <form
+                className="form-design row mx-0 py-2"
+                action=""
+                onSubmit={handleSaveChanges}
+              >
+                {/* <div className="form-group col-6">
+                  <label htmlFor="quesstioon">USER NAME</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    id="quesstioon"
+                    name="quesstioon"
+                    defaultValue={userName}
+                    onChange={(e) => setUserName2(e.target.value)}
+                  />
+                </div>
+                <div className="form-group col-6">
+                  <label htmlFor="quesstioon">MOBILE NUMBER</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    id="quesstioon"
+                    name="quesstioon"
+                    defaultValue={mobile}
+                    onChange={(e) => setMobile2(e.target.value)}
+                  />
+                </div>
+                <div className="form-group col-6">
+                  <label htmlFor="quesstioon">EMAIL ADDRESS</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    id="quesstioon"
+                    name="quesstioon"
+                    defaultValue={email}
+                    onChange={(e) => setEmail2(e.target.value)}
+                  />
+                </div> */}
+                <div className="form-group col-12">
+                  <label htmlFor="quesstioon">Descripation</label>
+                  <textarea
+                    className="form-control"
+                    type="text"
+                    id="quesstioon"
+                    name="quesstioon"
+                    defaultValue={message}
+                    // onChange={(e) => setMessage2(e.target.value)}
+                    readOnly
+                  />
+                </div>
+                {/* <div className="form-group col-6">
+                  <label htmlFor="quesstioon">DATE</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    id="quesstioon"
+                    name="quesstioon"
+                    defaultValue="11/09/2023"
+                  />
+                </div> */}
+                {/* <div className="form-group col-12">
+                  <label htmlFor="quesstioon">STATUS</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    id="quesstioon"
+                    name="quesstioon"
+                    defaultValue={status}
+                    onChange={(e) => setStatus2(e.target.value)}
+                  />
+                </div> */}
+                <div className="form-group col-12">
+                  <form>
+                    {/* <div className="form-floating "> */}
+                    <select
+                      className="form-select"
+                      id="floatingSelect12"
+                      aria-label="  select example"
+                      defaultValue=" "
+                      // style={{
+                      //   padding: "5px",
+                      // }}
+                      onChange={(e) => setStatus2(e.target.value)}
+                    >
+                      <option value=""> Status</option>
+                      <option value="Pending">Pending</option>
+                      <option value="progress">progress</option>
+                      <option value="Fixed">Fixed</option>
+                    </select>
+                    {/* </div> */}
+                  </form>
+                </div>
+                <div className="form-group col-12 text-center mb-0">
+                  <button type="submit" className="comman_btn">
+                    <span>Update</span>
+                  </button>
+                  <a
+                    href="javascript:;"
+                    data-bs-dismiss="modal"
+                    className="comman_btn ms-3 bg-danger"
+                  >
+                    <span>Cancel</span>
+                  </a>
+                </div>
+              </form>
             </div>
           </div>
         </div>

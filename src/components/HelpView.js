@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import HelpQuestion from "./HelpQuestion";
 import HelpEditModel from "./HelpEditModel";
 import HelpEditModelEn from "./HelpEditModelEn";
@@ -12,44 +12,124 @@ function HelpView() {
   const [selectedQuestionId, setSelectedQuestionId] = useState(null); // Add selectedQuestionId state
   axios.defaults.headers.common["x-auth-token-user"] =
     localStorage.getItem("token");
-  useEffect(() => {
-    userList();
-  }, []);
 
-  const userList = async () => {
-    const { data } = await axios.post(
-      "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/help/help/questionList"
-    );
-    setHelpViewList(data.results.listData.reverse());
-    console.log(data);
-  };
+  const { item } = useParams();
+  let parsedItem = null;
+  try {
+    if (item) {
+      parsedItem = JSON.parse(decodeURIComponent(item));
+      console.log("parsedItem", parsedItem);
+    }
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
 
-  const refreshList = () => {
-    userList();
-  };
-
-  const handleEdit = (_id) => {
-    const selectedQuestion = helpViewList.find((data) => data._id === _id);
-    setSelectedQuestionId(selectedQuestion?._id); // Update selectedQuestionId state
-    setFormData({
-      questions: selectedQuestion?.Question || "",
-      answers: selectedQuestion?.Answer || "",
-      questions_ar: selectedQuestion?.Question_ar || "",
-      answers_ar: selectedQuestion?.Answer_ar || "",
-    });
-  };
-
-  const [formData, setFormData] = useState({
-    questions: "",
-    answers: "",
-    questions_ar: "",
-    answers_ar: "",
-  });
+  if (!parsedItem) {
+    console.error("Item data is missing or invalid.");
+  }
 
   return (
     <>
-      <Sidebar />
+      <Sidebar Dash={"help"} />
       <div className="admin_main">
+        <div className="admin_main_inner">
+          <div className="admin_panel_data height_adjust">
+            <div className="row buyers-details justify-content-center">
+              <div className="col-12">
+                <div className="row mx-0">
+                  <div className="col-12 design_outter_comman shadow mb-4 toggle_set">
+                    <div className="row comman_header justify-content-between">
+                      <div className="col-auto">
+                        <h2>Help &amp; Support Details</h2>
+                      </div>
+                    </div>
+                    <div className="row justify-content-center py-5">
+                      <div className="col-10">
+                        <form className="form-design row" action="">
+                          <div className="form-group col-6">
+                            <label htmlFor="quesstioon">USER NAME</label>
+                            <input
+                              disabled=""
+                              className="form-control"
+                              type="text"
+                              id="quesstioon"
+                              name="quesstioon"
+                              defaultValue={parsedItem?.userName}
+                              readOnly
+                            />
+                          </div>
+                          <div className="form-group col-6">
+                            <label htmlFor="quesstioon">MOBILE NUMBER</label>
+                            <input
+                              disabled=""
+                              className="form-control"
+                              type="text"
+                              id="quesstioon"
+                              name="quesstioon"
+                              defaultValue={parsedItem?.mobileNumber}
+                              readOnly
+                            />
+                          </div>
+                          <div className="form-group col-6">
+                            <label htmlFor="quesstioon">EMAIL ADDRESS</label>
+                            <input
+                              disabled=""
+                              className="form-control"
+                              type="text"
+                              id="quesstioon"
+                              name="quesstioon"
+                              defaultValue={parsedItem?.userEmail}
+                              readOnly
+                            />
+                          </div>
+                          <div className="form-group col-6">
+                            <label htmlFor="quesstioon">MESSAGES</label>
+                            <textarea
+                              disabled=""
+                              className="form-control"
+                              type="text"
+                              id="quesstioon"
+                              name="quesstioon"
+                              defaultValue={parsedItem?.descripation}
+                              readOnly
+                            />
+                          </div>
+                          <div className="form-group col-6">
+                            <label htmlFor="quesstioon">DATE</label>
+                            <input
+                              disabled=""
+                              className="form-control"
+                              type="text"
+                              id="quesstioon"
+                              name="quesstioon"
+                              defaultValue={parsedItem?.createdAt?.slice(0, 10)}
+                              readOnly
+                            />
+                          </div>
+                          <div className="form-group col-6">
+                            <label htmlFor="quesstioon">STATUS</label>
+                            <input
+                              disabled=""
+                              className="form-control"
+                              type="text"
+                              id="quesstioon"
+                              name="quesstioon"
+                              defaultValue={parsedItem?.status}
+                              readOnly
+                            />
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="admin_main">
         <div className="admin_main_inner">
           <div className="admin_panel_data height_adjust">
             <div className="row help_view justify-content-center">
@@ -149,7 +229,7 @@ function HelpView() {
         setFormData={setFormData}
         selectedQuestionId={selectedQuestionId}
       />
-      <HelpQuestion />
+      <HelpQuestion /> */}
     </>
   );
 }

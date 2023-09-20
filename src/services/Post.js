@@ -12,9 +12,9 @@ export const PostApi = createApi({
   //   return headers;
   // },
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/",
+    baseUrl: "http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/",
     headers: {
-      "x-auth-token-user": localStorage.getItem("token"),
+      "x-auth-token-admin": localStorage.getItem("token"),
     },
   }),
   endpoints: (builder) => ({
@@ -22,7 +22,7 @@ export const PostApi = createApi({
       query: (body) => {
         console.log("update login data", body);
         return {
-          url: "/admin/user/login",
+          url: "admin/admin-login",
           method: "post",
           body,
         };
@@ -64,7 +64,91 @@ export const PostApi = createApi({
     }),
     getDashboardCount: builder.query({
       query: (name) => ({
-        url: "/admin/dashboards/count/order-dashboards",
+        url: "admin/user-count",
+        method: "post",
+      }),
+    }),
+    getDashboardAll: builder.query({
+      query: (name) => ({
+        url: "admin/dashboards-home",
+        method: "post",
+      }),
+    }),
+    getHelpList: builder.query({
+      query: (name) => ({
+        url: "admin/contact-list",
+        method: "post",
+      }),
+    }),
+    filterDashboardByDate: builder.query({
+      query: ({ from, to }) => ({
+        url: "admin/dashboards-home",
+        method: "post",
+        body: { from, to },
+      }),
+    }),
+    filterUserByDate: builder.query({
+      query: ({ from, to }) => ({
+        url: "admin/user-list",
+        method: "post",
+        body: { from, to },
+      }),
+    }),
+    filterOrderByDate: builder.query({
+      query: ({ from, to }) => ({
+        url: "admin/order-list",
+        method: "post",
+        body: { from, to },
+      }),
+    }),
+    filterCompleteOrderByDate: builder.query({
+      query: ({ from, to }) => ({
+        url: "admin/completed-order",
+        method: "post",
+        body: { from, to },
+      }),
+    }),
+    filterTransactionListByDate: builder.query({
+      query: ({ from, to }) => ({
+        url: "admin/transaction-list",
+        method: "post",
+        body: { from, to },
+      }),
+    }),
+    filterHelpListByDate: builder.query({
+      query: ({ from, to }) => ({
+        url: "admin/contact-list",
+        method: "post",
+        body: { from, to },
+      }),
+    }),
+    getProductListAll: builder.query({
+      query: (name) => ({
+        url: "admin/product-list",
+        method: "post",
+      }),
+    }),
+    getUserListAll: builder.query({
+      query: (name) => ({
+        url: "admin/user-list",
+        method: "post",
+      }),
+    }),
+    getOrderListAll: builder.query({
+      query: (name) => ({
+        url: "admin/order-list",
+        method: "post",
+      }),
+    }),
+    getCompletedOrderListAll: builder.query({
+      query: (name) => ({
+        url: "admin/completed-order",
+        method: "post",
+      }),
+    }),
+    getTransactionListAll: builder.query({
+      query: (name) => ({
+        url: "admin/transaction-list",
         method: "post",
       }),
     }),
@@ -94,7 +178,7 @@ export const PostApi = createApi({
     }),
     getContentList: builder.query({
       query: (name) => ({
-        url: `admin/content/content/list`,
+        url: "admin/content-list",
         method: "post",
       }),
     }),
@@ -164,9 +248,21 @@ export const PostApi = createApi({
     }),
     deleteContact: builder.mutation({
       query: (id) => ({
-        url: `admin/contact/contact/contactDelete/${id}`,
-        method: "DELETE",
+        url: `admin/contact-deleted/${id}`,
+        method: "post",
       }),
+    }),
+    updateHelp: builder.mutation({
+      query: (body) => {
+        console.log("update address", body);
+        const { id, ...data } = body;
+        console.log("update address body data", data);
+        return {
+          url: `admin/edit-contact/${id}`,
+          method: "post",
+          body: data,
+        };
+      },
     }),
     updateAddress: builder.mutation({
       query: (body) => {
@@ -217,7 +313,7 @@ export const PostApi = createApi({
       },
     }),
     updateBrand: builder.mutation({
-      query: ({id1, formData}) => {
+      query: ({ id1, formData }) => {
         return {
           url: `/admin/product/edit-brand/${id1}`,
           method: "post",
@@ -275,8 +371,8 @@ export const PostApi = createApi({
         console.log("update Sub category body data", data);
         console.log("update Sub category body id", id);
         return {
-          url: `admin/content/content/updateContent/${id}`,
-          method: "PATCH",
+          url: `admin/edit-content/${id}`,
+          method: "post",
           body: data,
         };
       },
@@ -610,4 +706,18 @@ export const {
   useAgentDetailsAllMutation,
   useUpdateHomeScreenBannerMutation,
   useGetDashboardCountQuery,
+  useGetDashboardAllQuery,
+  useGetUserListAllQuery,
+  useGetProductListAllQuery,
+  useGetOrderListAllQuery,
+  useGetCompletedOrderListAllQuery,
+  useGetTransactionListAllQuery,
+  useFilterDashboardByDateQuery,
+  useFilterUserByDateQuery,
+  useFilterOrderByDateQuery,
+  useFilterCompleteOrderByDateQuery,
+  useFilterTransactionListByDateQuery,
+  useGetHelpListQuery,
+  useFilterHelpListByDateQuery,
+  useUpdateHelpMutation,
 } = PostApi;

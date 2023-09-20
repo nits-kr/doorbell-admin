@@ -21,7 +21,6 @@ import HelpView from "./components/HelpView";
 import Help from "./components/Help";
 import ForgetPassword from "./components/ForgetPassword";
 import EditProfile from "./components/EditProfile";
-import Dashboard from "./components/Dashboard";
 import ContentManagement from "./components/ContentManagement";
 import ContactUs from "./components/ContactUs";
 import ChangePassword from "./components/ChangePassword";
@@ -46,7 +45,7 @@ import LoadingBar from "react-top-loading-bar";
 import SubCategory from "./components/SubCategory";
 import ProductManagement2 from "./components/ProductManagement2";
 import ProductList2 from "./components/ProductList2";
-import ProductManagementEdit from "./components/ProductManagementEdit";
+// import ProductManagementEdit from "./components/ProductManagementView";
 import HomeScreenBanner2 from "./components/HomeScreenBanner2";
 import GoogleMap from "./components/GoogleMap";
 import BrandManagement from "./components/brand/BrandManagement";
@@ -54,10 +53,11 @@ import UserOfferPOsted from "./components/UserOfferPOsted";
 import UserOfferPostedDetails from "./components/UserOfferPostedDetails";
 import UserDetailsAll from "./components/UserDetailsAll";
 import AgentDetailsAll from "./components/AgentDetailsAll";
-import Dashboard2 from "./components/Dashboard2";
-import ProductManagementEdit2 from "./components/ProductManagementEdit2";
+// import Dashboard2 from "./components/Dashboard2";
+import ProductManagementView from "./components/ProductManagementView";
 import DashboardNew from "./components/DashboardNew";
 import StoreSettings from "./components/configurations/StoreSettings";
+import UpcomingOrderView from "./components/UpcomingOrderView";
 
 function App() {
   const [progress, setProgress] = useState(0);
@@ -88,8 +88,8 @@ function App() {
             path="/dashboard"
             element={<Dashboard setProgress={setProgress} />}
           /> */}
-         {/* <Dashboard2/> */}
-         {/* <DashboardNew/> */}
+          {/* <Dashboard2/> */}
+          {/* <DashboardNew/> */}
           <Route
             exact
             className="active"
@@ -162,8 +162,8 @@ function App() {
           <Route
             exact
             className="active"
-            path="/product-management-edit/:id"
-            element={<ProductManagementEdit2 setProgress={setProgress}/>}
+            path="/product-management-view/:item"
+            element={<ProductManagementView setProgress={setProgress} />}
           />
           {/* <Route
             exact
@@ -193,6 +193,13 @@ function App() {
             path="/orders"
             element={<OrderManagement />}
           />
+          <Route
+            exact
+            className="active"
+            path="/upcoming-orders"
+            element={<UpcomingOrderView />}
+          />
+
           <Route
             exact
             className="active"
@@ -271,7 +278,7 @@ function App() {
           <Route
             exact
             className="active"
-            path="/help-view"
+            path="/help-view/:item"
             element={<HelpView />}
           />
           <Route
@@ -375,9 +382,8 @@ function App() {
             exact
             className="active"
             path="/store-settings"
-            element={<StoreSettings/>}
+            element={<StoreSettings />}
           />
-          
         </Routes>
       </BrowserRouter>
     </>

@@ -21,16 +21,17 @@ function ContentManagement() {
   const [titleAr2, setTitleAr2] = useState("");
   const [descriptionAr2, setDescriptionAr2] = useState("");
   const [itemId, setItemId] = useState([]);
+  const [itemId2, setItemId2] = useState([]);
   const [titleEn3, setTitleNameEn3] = useState("");
   const [descriptionEn3, setDescriptionEn3] = useState("");
   const [titleAr3, setTitleNameAr3] = useState("");
   const [descriptionAr3, setDescriptionAr3] = useState("");
   console.log("content item id ", itemId);
-  axios.defaults.headers.common["x-auth-token-user"] =
+  axios.defaults.headers.common["x-auth-token-admin"] =
     localStorage.getItem("token");
   useEffect(() => {
     const reversedList =
-      contentListItems?.data?.results?.list?.slice().reverse() ?? [];
+      contentListItems?.data?.results?.listing?.slice().reverse() ?? [];
     setContentList(reversedList);
     // subContent();
   }, [contentListItems]);
@@ -45,8 +46,8 @@ function ContentManagement() {
     console.log("handleSaveChanges1", itemId);
     const editAddress = {
       id: itemId,
-      title: titleEn,
-      Description: descriptionEn,
+      title_en: titleEn,
+      Description_en: descriptionEn,
     };
     try {
       await update(editAddress);
@@ -73,7 +74,7 @@ function ContentManagement() {
     e.preventDefault();
     console.log("handleSaveChanges1", itemId);
     const editAddress = {
-      id: itemId,
+      id: itemId2,
       title_ar: titleAr,
       Description_ar: descriptionAr,
     };
@@ -99,8 +100,12 @@ function ContentManagement() {
     }
   };
   const handleItem = (item) => {
-    setTitleEn2(item?.title || "");
-    setDescriptionEn2(item?.Description || "");
+    setTitleEn2(item?.title_en || "");
+    setDescriptionEn2(item?.Description_en || "");
+  };
+  const handleItem2 = (item) => {
+    setTitleAr2(item?.title_ar || "");
+    setDescriptionAr2(item?.Description_ar || "");
   };
   const handleSaveChanges = (e) => {
     e.preventDefault();
@@ -130,22 +135,22 @@ function ContentManagement() {
         <div className="admin_main_inner">
           <div className="admin_panel_data height_adjust">
             <div className="row content_management justify-content-center">
-              <div className="col-12 text-end mb-4">
+              {/* <div className="col-12 text-end mb-4">
                 <Link
                   to="#"
                   className="comman_btn mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#staticBackdrop5"
                 >
-                  + Create Content
+                  <span>+ Create Content</span>
                 </Link>
-              </div>
+              </div> */}
               {contentList?.map((data, index) => (
                 <div className="col-12 mb-5" key={index}>
                   <div className="row">
                     <div className="col-md-6 d-flex align-items-stretch">
                       <div className="row content_management_box me-0">
-                        <h2>{data.title}</h2>
+                        <h2>{data?.title_en}</h2>
                         <Link
                           className="edit_content_btn comman_btn"
                           data-bs-toggle="modal"
@@ -156,9 +161,12 @@ function ContentManagement() {
                             setItemId(data?._id);
                           }}
                         >
-                          <i className="far fa-edit me-2"></i>Edit
+                          <span>
+                            <i className="far fa-edit me-2"></i>
+                          </span>
+                          <span>Edit</span>
                         </Link>
-                        <p>{data?.Description}</p>
+                        <p>{data?.Description_en}</p>
                       </div>
                     </div>
                     <div className="col-md-6 d-flex align-items-stretch">
@@ -170,12 +178,14 @@ function ContentManagement() {
                           data-bs-target="#staticBackdrop1"
                           to="#"
                           onClick={() => {
-                            handleItem(data);
-                            setItemId(data?._id);
+                            handleItem2(data);
+                            setItemId2(data?._id);
                           }}
                         >
-                          <i className="far fa-edit me-2"></i>
-                          Edit
+                          <span>
+                            <i className="far fa-edit me-2"></i>
+                          </span>
+                          <span>Edit</span>
                         </Link>
                         <p>{data?.Description_ar}</p>
                       </div>
@@ -237,10 +247,10 @@ function ContentManagement() {
                 <div className="form-group col-12 text-center mb-0">
                   <button
                     type="submit"
-                    className="comman_btn2"
+                    className="comman_btn"
                     onClick={handleSaveChanges1}
                   >
-                    Update
+                    <span>Update</span>
                   </button>
                 </div>
               </form>
@@ -301,12 +311,19 @@ function ContentManagement() {
                   />
                 </div>
                 <div className="form-group col-12 text-center mb-0">
-                  <button
+                  {/* <button
                     type="submit"
                     className="comman_btn2"
                     onClick={handleSaveChanges2}
                   >
                     Update
+                  </button> */}
+                  <button
+                    type="submit"
+                    className="comman_btn"
+                    onClick={handleSaveChanges2}
+                  >
+                    <span>Update</span>
                   </button>
                 </div>
               </form>
