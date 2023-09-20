@@ -60,18 +60,48 @@ function DashboardNew(props) {
 
   axios.defaults.headers.common["x-auth-token-admin"] =
     localStorage.getItem("token");
+
   useEffect(() => {
-    if (dashboardlist) {
-      console.log(dashboardlist);
-      props.setProgress(10);
-      setLoading(true);
-      setTimeout(() => {
-        setDashboardList(dashboardlist?.results?.listData);
-        setLoading(false);
+    props.setProgress(10);
+    setLoading(true);
+    axios
+      .post(
+        "http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/dashboards-home"
+      )
+      .then((response) => {
+        setDashboardList(response?.data?.results?.listData.reverse());
+        console.log(response.data);
         props.setProgress(100);
-      }, 1000);
-    }
-  }, [dashboardlist]);
+        setLoading(false);
+      });
+  }, []);
+  // useEffect(() => {
+  //   props.setProgress(10);
+  //   setLoading(true);
+  //   axios
+  //     .post(
+  //       "http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/dashboards-home"
+  //     )
+  //     .then((response) => {
+  //       setTotalRevenue(response?.data?.results?.orderRevenue);
+  //       console.log(response.data);
+  //       props.setProgress(100);
+  //       setLoading(false);
+  //     });
+  // }, []);
+  // useEffect(() => {
+  //   if (dashboardlist) {
+  //     console.log(dashboardlist);
+  //     props.setProgress(10);
+  //     setLoading(true);
+  //     setTimeout(() => {
+  //       setDashboardList(dashboardlist?.results?.listData);
+  //       setLoading(false);
+  //       props.setProgress(100);
+  //     }, 1000);
+  //   }
+  // }, [dashboardlist]);
+
   useEffect(() => {
     if (dashboardCount) {
       setTotalRevenue(dashboardCount?.results?.orderRevenue);
@@ -140,8 +170,8 @@ function DashboardNew(props) {
                         <div className="dashboard_boxcontent">
                           <h2>Total Revenue</h2>
                           <span>
-                            {totalRevenue.reduce(
-                              (sum, item) => sum + item.total,
+                            {totalRevenue?.reduce(
+                              (sum, item) => sum + item?.total,
                               0
                             )}{" "}
                           </span>

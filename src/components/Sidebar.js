@@ -278,10 +278,10 @@ function Sidebar({ Dash }) {
                       <i className="far fa-bell"></i>
                     </div>
                 </div> */}
-                <Link className="change_language me-2" to="">
+                {/* <Link className="change_language me-2" to="">
                   <img src="../assets/img/saudi_flag1.png" alt="" />
                   عربى
-                </Link>
+                </Link> */}
                 <div className="dropdown Profile_dropdown">
                   <button
                     className="btn btn-secondary"

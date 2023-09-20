@@ -27,6 +27,9 @@ function Login() {
         timer: 500,
       }).then(() => {
         navigate("/dashboard");
+        setTimeout(() => {
+          window?.location?.reload();
+        }, 500);
       });
     } else if (res.isError && res.error?.data?.error) {
       Swal.fire({
