@@ -20,7 +20,8 @@ function Sidebar({ Dash }) {
           <div className="siderbar_inner">
             <div className="sidebar_logo">
               <Link to="javscript:;">
-                <img src="../assets/img/logo.png" alt="Logo" />
+                <img src={require("../asset/img/logo.png")} alt="Logo" />
+                {/* <img src="../assets/img/logo.png" alt="Logo" /> */}
               </Link>
             </div>
             <div className="sidebar_menus">

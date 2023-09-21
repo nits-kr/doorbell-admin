@@ -1,10 +1,31 @@
 import React from "react";
+import axios from "axios";
 import Sidebar from "./Sidebar";
+import { useParams } from "react-router-dom";
 
 function UpcomingOrderView() {
+  axios.defaults.headers.common["x-auth-token-user"] =
+    localStorage.getItem("token");
+
+  const { item } = useParams();
+
+  let parsedItem = null;
+  try {
+    if (item) {
+      parsedItem = JSON.parse(decodeURIComponent(item));
+      console.log("parsedItem", parsedItem);
+    }
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+
+  if (!parsedItem) {
+    console.error("Item data is missing or invalid.");
+  }
+  console.log("parsedItem", parsedItem);
   return (
     <>
-      <Sidebar />
+      <Sidebar Dash={"orders"} />
       <div className="admin_main">
         <div className="admin_main_inner">
           <div className="admin_panel_data height_adjust">
@@ -28,7 +49,8 @@ function UpcomingOrderView() {
                               type="text"
                               id="quesstioon"
                               name="quesstioon"
-                              defaultValue="Mohd. Arbab"
+                              defaultValue={`${parsedItem?.firstName} ${parsedItem?.lastName}`}
+                              readOnly
                             />
                           </div>
                           <div className="form-group col-6">
@@ -40,6 +62,7 @@ function UpcomingOrderView() {
                               id="quesstioon"
                               name="quesstioon"
                               defaultValue="xyz@gmail.com"
+                              readOnly
                             />
                           </div>
                           <div className="form-group col-6">
@@ -50,7 +73,8 @@ function UpcomingOrderView() {
                               type="text"
                               id="quesstioon"
                               name="quesstioon"
-                              defaultValue="01/01/2020"
+                              defaultValue={parsedItem?.createdAt?.slice(0, 10)}
+                              readOnly
                             />
                           </div>
                           <div className="form-group col-6">
@@ -62,6 +86,7 @@ function UpcomingOrderView() {
                               id="quesstioon"
                               name="quesstioon"
                               defaultValue="100 SAR"
+                              readOnly
                             />
                           </div>
                           <div className="form-group col-6">
@@ -72,10 +97,11 @@ function UpcomingOrderView() {
                               type="text"
                               id="quesstioon"
                               name="quesstioon"
-                              defaultValue="Credit Card"
+                              defaultValue={parsedItem?.paymentMethod}
+                              readOnly
                             />
                           </div>
-                          <div className="form-group col-6">
+                          {/* <div className="form-group col-6">
                             <label htmlFor="quesstioon">Status</label>
                             <input
                               disabled=""
@@ -85,6 +111,35 @@ function UpcomingOrderView() {
                               name="quesstioon"
                               defaultValue="In Progress"
                             />
+                          </div> */}
+                          <div className="form-group col-6">
+                            <form>
+                              <label htmlFor="quesstioon">Status</label>
+                              <div className="form-floating ">
+                                <select
+                                  className="form-select"
+                                  id="floatingSelect12"
+                                  aria-label="  select example"
+                                  defaultValue=" "
+                                  style={{
+                                    padding: "14px",
+                                    height: "50px",
+                                  }}
+                                  // onChange={(e) =>
+                                  //   setOrderStatus(e.target.value)
+                                  // }
+                                >
+                                  <option value="">Order Status</option>
+                                  <option value="Approved">Approved</option>
+                                  <option value="Packed">Packed</option>
+                                  <option value="Shipped">Shipped</option>
+                                  <option value="Delivered">Delivered</option>
+                                  <option value="Cancelled">Cancelled</option>
+                                  <option value="Pending">Pending</option>
+                                  <option value="Inprogress">Inprogress</option>
+                                </select>
+                              </div>
+                            </form>
                           </div>
                           <div className="form-group col-12">
                             <label htmlFor="quesstioon">Address</label>
@@ -94,12 +149,15 @@ function UpcomingOrderView() {
                               name=""
                               id=""
                               style={{ height: 100 }}
-                              defaultValue={
-                                "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Recusandae quasi provident nesciunt eligendi nobis placeat totam corrupti, itaque impedit natus ex fuga consequuntur optio veniam quam sit maxime voluptates perferendis."
-                              }
+                              defaultValue={parsedItem?.address}
                             />
                           </div>
                         </form>
+                        <div className="form-group col-10 text-center mb-0">
+                          <button type="submit" className="comman_btn">
+                            <span>Update</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

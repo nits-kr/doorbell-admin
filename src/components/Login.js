@@ -26,10 +26,10 @@ function Login() {
         showConfirmButton: false,
         timer: 500,
       }).then(() => {
-        navigate("/dashboard");
+        navigate("/languageSelection");
         setTimeout(() => {
           window?.location?.reload();
-        }, 500);
+        }, 50);
       });
     } else if (res.isError && res.error?.data?.error) {
       Swal.fire({
@@ -82,7 +82,8 @@ function Login() {
                 <div className="row">
                   <div className="col-12 formheader mb-4">
                     <div className="text-center">
-                      <img src="../assets/img/logo.png" alt="" />
+                      <img src={require("../asset/img/logo.png")} alt="" />
+                      {/* <img src="../assets/img/logo.png" alt="" /> */}
                     </div>
                     <h1>Login for Admin Panel</h1>
                     <p>Please enter your email and password</p>

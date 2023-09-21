@@ -272,12 +272,14 @@ function DashboardNew(props) {
                                       <td>+966 9876543210</td>
                                       <td> {item?.createdAt?.slice(0, 10)} </td>
                                       <td>
-                                        <a
+                                        <Link
                                           className="comman_btn table_viewbtn"
-                                          href="javascript:;"
+                                          to={`/recent-order/${encodeURIComponent(
+                                            JSON.stringify(item)
+                                          )}`}
                                         >
                                           <span>View</span>
-                                        </a>
+                                        </Link>
                                       </td>
                                     </tr>
                                   );

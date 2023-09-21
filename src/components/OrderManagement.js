@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "./Sidebar";
 import {
+  useDeleteOrderListMutation,
   useFilterCompleteOrderByDateQuery,
   useFilterOrderByDateQuery,
   useGetCompletedOrderListAllQuery,
@@ -15,6 +16,7 @@ import {
 function OrderManagement() {
   const { data: orderListAll } = useGetOrderListAllQuery();
   const { data: completedOrderListAll } = useGetCompletedOrderListAllQuery();
+  const [deleteOrder] = useDeleteOrderListMutation();
   const [orderList, setOrderList] = useState([]);
   const [completedOrderList, setCompletedOrderList] = useState([]);
   const [fromDate, setFromDate] = useState("");
@@ -57,7 +59,7 @@ function OrderManagement() {
   useEffect(() => {
     if (orderListAll) {
       console.log(orderListAll);
-      setOrderList(orderListAll?.results?.order);
+      setOrderList(orderListAll?.results?.order?.slice()?.reverse());
     }
   }, [orderListAll]);
 
@@ -248,16 +250,51 @@ function OrderManagement() {
                                             <td>
                                               <Link
                                                 className="comman_btn table_viewbtn"
-                                                to="/upcoming-orders"
+                                                // to="/upcoming-orders"
+                                                to={`/upcoming-orders/${encodeURIComponent(
+                                                  JSON.stringify(item)
+                                                )}`}
                                               >
                                                 <span>View</span>
                                               </Link>
-                                              <a
+                                              <Link
                                                 className="comman_btn bg-danger table_viewbtn ms-1"
-                                                href="javascript:;"
+                                                to="#"
+                                                onClick={() => {
+                                                  Swal.fire({
+                                                    title: "Are you sure?",
+                                                    text: "You won't be able to revert this!",
+                                                    icon: "warning",
+                                                    showCancelButton: true,
+                                                    confirmButtonColor:
+                                                      "#3085d6",
+                                                    cancelButtonColor: "#d33",
+                                                    confirmButtonText:
+                                                      "Yes, delete it!",
+                                                  }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                      deleteOrder(item?._id);
+                                                      Swal.fire(
+                                                        "Deleted!",
+                                                        `${item?._id}  item has been deleted.`,
+                                                        "success"
+                                                      ).then(() => {
+                                                        const updatedOfferList =
+                                                          orderList.filter(
+                                                            (offer) =>
+                                                              offer._id !==
+                                                              item?._id
+                                                          );
+                                                        setOrderList(
+                                                          updatedOfferList
+                                                        );
+                                                      });
+                                                    }
+                                                  });
+                                                }}
                                               >
                                                 <span>Delete</span>
-                                              </a>
+                                              </Link>
                                             </td>
                                           </tr>
                                         );
@@ -400,18 +437,50 @@ function OrderManagement() {
                                                 </div>
                                               </td>
                                               <td>
-                                                <a
+                                                <Link
                                                   className="comman_btn table_viewbtn"
-                                                  href="complete-order-view.html"
+                                                  to="/completed-orders"
                                                 >
                                                   <span>View</span>
-                                                </a>
-                                                <a
+                                                </Link>
+                                                <Link
                                                   className="comman_btn bg-danger table_viewbtn ms-1"
-                                                  href="javascript:;"
+                                                  to="#"
+                                                  onClick={() => {
+                                                    Swal.fire({
+                                                      title: "Are you sure?",
+                                                      text: "You won't be able to revert this!",
+                                                      icon: "warning",
+                                                      showCancelButton: true,
+                                                      confirmButtonColor:
+                                                        "#3085d6",
+                                                      cancelButtonColor: "#d33",
+                                                      confirmButtonText:
+                                                        "Yes, delete it!",
+                                                    }).then((result) => {
+                                                      if (result.isConfirmed) {
+                                                        deleteOrder(item?._id);
+                                                        Swal.fire(
+                                                          "Deleted!",
+                                                          `${item?._id}  item has been deleted.`,
+                                                          "success"
+                                                        ).then(() => {
+                                                          const updatedOfferList =
+                                                            completedOrderList.filter(
+                                                              (offer) =>
+                                                                offer._id !==
+                                                                item?._id
+                                                            );
+                                                          setCompletedOrderList(
+                                                            updatedOfferList
+                                                          );
+                                                        });
+                                                      }
+                                                    });
+                                                  }}
                                                 >
                                                   <span>Delete</span>
-                                                </a>
+                                                </Link>
                                               </td>
                                             </tr>
                                           );

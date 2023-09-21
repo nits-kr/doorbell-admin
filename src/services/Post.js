@@ -555,8 +555,8 @@ export const PostApi = createApi({
     }),
     deleteOrderList: builder.mutation({
       query: (id) => ({
-        url: `/admin/order/order/delete-order/${id}`,
-        method: "DELETE",
+        url: `admin/delete-order/${id}`,
+        method: "post",
       }),
     }),
     deleteCategoryList: builder.mutation({

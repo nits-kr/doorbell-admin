@@ -9,7 +9,7 @@ import { faEye, faPencil, faCopy } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "./Sidebar";
 
 function ProductManagementView(props) {
-  axios.defaults.headers.common["x-auth-token-user"] =
+  axios.defaults.headers.common["x-auth-token-admin"] =
     localStorage.getItem("token");
   const navigate = useNavigate();
   // const { id } = useParams();
