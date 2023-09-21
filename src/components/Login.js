@@ -26,7 +26,7 @@ function Login() {
         showConfirmButton: false,
         timer: 500,
       }).then(() => {
-        navigate("/languageSelection");
+        navigate("/dashboard");
         // setTimeout(() => {
         //   window?.location?.reload();
         // }, 50);

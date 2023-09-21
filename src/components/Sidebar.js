@@ -256,6 +256,11 @@ function Sidebar({ Dash }) {
                   </Link>
                 </li>
                 <li>
+                  <Link className={Dash === "faqs" ? "active" : ""} to="/faqs">
+                    <i className="fal fa-hands-heart"></i>FAQs
+                  </Link>
+                </li>
+                <li>
                   <Link className="dropdown-item" to="/">
                     <i class="fal fa-sign-out-alt"></i>Logout
                   </Link>

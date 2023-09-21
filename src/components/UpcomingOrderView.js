@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import Sidebar from "./Sidebar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useUpdateOrderStatusMutation } from "../services/Post";
 
 function UpcomingOrderView() {
+  const [orderStatus, setOrderStatus] = useState([]);
+  const [updateOrderStatus] = useUpdateOrderStatusMutation();
   axios.defaults.headers.common["x-auth-token-user"] =
     localStorage.getItem("token");
 
   const { item } = useParams();
+  const navigate = useNavigate();
 
   let parsedItem = null;
   try {
@@ -23,6 +28,38 @@ function UpcomingOrderView() {
     console.error("Item data is missing or invalid.");
   }
   console.log("parsedItem", parsedItem);
+
+  const handleSaveChanges = async (e) => {
+    e.preventDefault();
+    const editHelp = {
+      id: parsedItem?._id,
+      status: orderStatus,
+    };
+    try {
+      await updateOrderStatus(editHelp);
+      Swal.fire({
+        icon: "success",
+        title: "Changes Saved",
+        text: "The Status has been updated successfully.",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // window.location.reload();
+          navigate("/orders");
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        }
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "An error occurred while updating the subcategory.",
+      });
+    }
+  };
   return (
     <>
       <Sidebar Dash={"orders"} />
@@ -40,7 +77,11 @@ function UpcomingOrderView() {
                     </div>
                     <div className="row justify-content-center py-5">
                       <div className="col-10">
-                        <form className="form-design row" action="">
+                        <form
+                          className="form-design row"
+                          action=""
+                          onSubmit={handleSaveChanges}
+                        >
                           <div className="form-group col-6">
                             <label htmlFor="quesstioon">Full Name</label>
                             <input
@@ -120,23 +161,19 @@ function UpcomingOrderView() {
                                   className="form-select"
                                   id="floatingSelect12"
                                   aria-label="  select example"
-                                  defaultValue=" "
+                                  defaultValue={parsedItem?.orderStatus}
                                   style={{
                                     padding: "14px",
                                     height: "50px",
                                   }}
-                                  // onChange={(e) =>
-                                  //   setOrderStatus(e.target.value)
-                                  // }
+                                  onChange={(e) =>
+                                    setOrderStatus(e.target.value)
+                                  }
                                 >
                                   <option value="">Order Status</option>
-                                  <option value="Approved">Approved</option>
-                                  <option value="Packed">Packed</option>
-                                  <option value="Shipped">Shipped</option>
                                   <option value="Delivered">Delivered</option>
                                   <option value="Cancelled">Cancelled</option>
-                                  <option value="Pending">Pending</option>
-                                  <option value="Inprogress">Inprogress</option>
+                                  <option value="InProgress">InProgress</option>
                                 </select>
                               </div>
                             </form>
@@ -152,12 +189,12 @@ function UpcomingOrderView() {
                               defaultValue={parsedItem?.address}
                             />
                           </div>
+                          <div className="form-group col-10 text-center mb-0">
+                            <button type="submit" className="comman_btn">
+                              <span>Update Status</span>
+                            </button>
+                          </div>
                         </form>
-                        <div className="form-group col-10 text-center mb-0">
-                          <button type="submit" className="comman_btn">
-                            <span>Update Status</span>
-                          </button>
-                        </div>
                       </div>
                     </div>
                   </div>

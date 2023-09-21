@@ -1,10 +1,26 @@
 import React from "react";
 import Sidebar from "./Sidebar";
+import { useParams } from "react-router-dom";
 
 function CompletedOrderView() {
+  const { item } = useParams();
+  let parsedItem = null;
+  try {
+    if (item) {
+      parsedItem = JSON.parse(decodeURIComponent(item));
+      console.log("parsedItem", parsedItem);
+    }
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+
+  if (!parsedItem) {
+    console.error("Item data is missing or invalid.");
+  }
+  console.log("parsedItem", parsedItem);
   return (
     <>
-      <Sidebar Dash={"orders"}/>
+      <Sidebar Dash={"orders"} />
       <div className="admin_main">
         <div className="admin_main_inner">
           <div className="admin_panel_data height_adjust">
@@ -28,7 +44,8 @@ function CompletedOrderView() {
                               type="text"
                               id="quesstioon"
                               name="quesstioon"
-                              defaultValue="Mohd. Arbab"
+                              defaultValue={`${parsedItem?.firstName} ${parsedItem?.lastName}`}
+                              readOnly
                             />
                           </div>
                           <div className="form-group col-6">
@@ -40,6 +57,7 @@ function CompletedOrderView() {
                               id="quesstioon"
                               name="quesstioon"
                               defaultValue="xyz@gmail.com"
+                              readOnly
                             />
                           </div>
                           <div className="form-group col-6">
@@ -50,7 +68,8 @@ function CompletedOrderView() {
                               type="text"
                               id="quesstioon"
                               name="quesstioon"
-                              defaultValue="01/01/2020"
+                              defaultValue={parsedItem?.createdAt?.slice(0, 10)}
+                              readOnly
                             />
                           </div>
                           <div className="form-group col-6">
@@ -62,6 +81,7 @@ function CompletedOrderView() {
                               id="quesstioon"
                               name="quesstioon"
                               defaultValue="100 SAR"
+                              readOnly
                             />
                           </div>
                           <div className="form-group col-6">
@@ -72,7 +92,8 @@ function CompletedOrderView() {
                               type="text"
                               id="quesstioon"
                               name="quesstioon"
-                              defaultValue="Credit Card"
+                              defaultValue={parsedItem?.paymentMethod}
+                              readOnly
                             />
                           </div>
                           <div className="form-group col-6">
@@ -83,7 +104,8 @@ function CompletedOrderView() {
                               type="text"
                               id="quesstioon"
                               name="quesstioon"
-                              defaultValue="Delivered"
+                              defaultValue={parsedItem?.orderStatus}
+                              readOnly
                             />
                           </div>
                           <div className="form-group col-12">
@@ -94,9 +116,8 @@ function CompletedOrderView() {
                               name=""
                               id=""
                               style={{ height: 100 }}
-                              defaultValue={
-                                "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Recusandae quasi provident nesciunt eligendi nobis placeat totam corrupti, itaque impedit natus ex fuga consequuntur optio veniam quam sit maxime voluptates perferendis."
-                              }
+                              defaultValue={parsedItem?.address}
+                              readOnly
                             />
                           </div>
                         </form>

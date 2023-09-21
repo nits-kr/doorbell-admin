@@ -3,7 +3,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "./Sidebar";
-import { useFilterUserByDateQuery, useGetFileQuery } from "../services/Post";
+import {
+  useFilterUserByDateQuery,
+  useGetFileQuery,
+  useUserStatusMutation,
+} from "../services/Post";
 import Spinner from "./Spinner";
 import GoogleMap from "./GoogleMap";
 import ReactGoogleMap from "./ReactGoogleMap";
@@ -14,6 +18,7 @@ function UsersManagement(props) {
   const [createMap, res] = useCreateMapMutation();
   const { data, isLoading, isError } = useGetFileQuery("file-id");
   const { data: userList } = useGetUserListAllQuery();
+  const [updateStatus] = useUserStatusMutation();
   const [loading, setLoading] = useState(true);
   console.log("down load data of user management", data);
   const [usersList, setUsersList] = useState([]);
@@ -22,6 +27,7 @@ function UsersManagement(props) {
   const [endDate, setEndDate] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [userListAll, setUserListListAll] = useState([]);
+  console.log("userlist", userListAll);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   axios.defaults.headers.common["x-auth-token-admin"] =
@@ -55,6 +61,41 @@ function UsersManagement(props) {
       }, 500);
     }
   }, [userList]);
+
+  const handleCheckboxChange = async (e, categoryId) => {
+    e.preventDefault();
+    console.log("handleSaveChanges1", categoryId);
+    const newStatus = e.target.checked;
+
+    const confirmationResult = await Swal.fire({
+      title: "Confirm Status Change",
+      text: "Do you want to change the status?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+
+    if (confirmationResult.isConfirmed) {
+      const editStatus = {
+        id: categoryId,
+        status: newStatus,
+      };
+      try {
+        await updateStatus(editStatus);
+        Swal.fire({
+          title: "Changes Saved",
+          text: "The Status has been updated successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      } catch (error) {}
+    }
+  };
 
   return (
     <>
@@ -121,7 +162,7 @@ function UsersManagement(props) {
                                   <th>Order Date</th>
                                   <th>Total Orders</th>
                                   <th>Status</th>
-                                  <th>Action</th>
+                                  {/* <th>Action</th> */}
                                 </tr>
                               </thead>
                               <tbody>
@@ -137,26 +178,30 @@ function UsersManagement(props) {
                                         <form className="table_btns d-flex align-items-center">
                                           <div className="check_toggle">
                                             <input
-                                              // data-bs-toggle="modal"
-                                              // data-bs-target="#staticBackdrop"
                                               type="checkbox"
-                                              defaultChecked=""
+                                              defaultChecked={item?.status}
                                               name={`check${index}`}
                                               id={`check${index}`}
                                               className="d-none"
+                                              onChange={(e) =>
+                                                handleCheckboxChange(
+                                                  e,
+                                                  item._id
+                                                )
+                                              }
                                             />
                                             <label htmlFor={`check${index}`} />
                                           </div>
                                         </form>
                                       </td>
-                                      <td>
+                                      {/* <td>
                                         <a
                                           className="comman_btn table_viewbtn"
                                           href="javascript:;"
                                         >
                                           <span>View</span>
                                         </a>
-                                      </td>
+                                      </td> */}
                                     </tr>
                                   );
                                 })}

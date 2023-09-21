@@ -228,11 +228,11 @@ function OrderManagement(props) {
                                                         "Approved"
                                                       ? "text-success"
                                                       : item?.orderStatus ===
-                                                        "Inprogress"
+                                                        "InProgress"
                                                       ? "text-primary"
                                                       : item?.orderStatus ===
                                                         "Delivered"
-                                                      ? "text-secondary"
+                                                      ? "text-success"
                                                       : "text-default"
                                                   }
                                                   style={{
@@ -250,11 +250,11 @@ function OrderManagement(props) {
                                                           "Approved"
                                                         ? "#e5ffe5"
                                                         : item?.orderStatus ===
-                                                          "Inprogress"
+                                                          "InProgress"
                                                         ? "#e5e5ff"
                                                         : item?.orderStatus ===
                                                           "Delivered"
-                                                        ? "#f3f3f3"
+                                                        ? "#e5ffe5"
                                                         : "#f9f9f9",
                                                     borderRadius: "5px",
                                                     padding: "2px 5px",
@@ -456,7 +456,10 @@ function OrderManagement(props) {
                                               <td>
                                                 <Link
                                                   className="comman_btn table_viewbtn"
-                                                  to="/completed-orders"
+                                                  // to="/completed-orders"
+                                                  to={`/completed-orders/${encodeURIComponent(
+                                                    JSON.stringify(item)
+                                                  )}`}
                                                 >
                                                   <span>View</span>
                                                 </Link>

@@ -56,6 +56,13 @@ export const PostApi = createApi({
         body,
       }),
     }),
+    createFaqs: builder.mutation({
+      query: (body) => ({
+        url: `admin/create-faqs`,
+        method: "POST",
+        body,
+      }),
+    }),
     getOfferList: builder.query({
       query: (name) => ({
         url: `admin/offer/offer-list`,
@@ -77,6 +84,12 @@ export const PostApi = createApi({
     getHelpList: builder.query({
       query: (name) => ({
         url: "admin/contact-list",
+        method: "post",
+      }),
+    }),
+    getFaqsList: builder.query({
+      query: (name) => ({
+        url: "admin/faqslist",
         method: "post",
       }),
     }),
@@ -264,6 +277,18 @@ export const PostApi = createApi({
         };
       },
     }),
+    updateOrderStatus: builder.mutation({
+      query: (body) => {
+        console.log("update address", body);
+        const { id, ...data } = body;
+        console.log("update address body data", data);
+        return {
+          url: `admin/status-change/${id}`,
+          method: "post",
+          body: data,
+        };
+      },
+    }),
     updateAddress: builder.mutation({
       query: (body) => {
         console.log("update address", body);
@@ -377,6 +402,19 @@ export const PostApi = createApi({
         };
       },
     }),
+    updateFaqs: builder.mutation({
+      query: (body) => {
+        console.log("update category", body);
+        const { id, ...data } = body;
+        console.log("update Sub category body data", data);
+        console.log("update Sub category body id", id);
+        return {
+          url: `admin/update-faqs/${id}`,
+          method: "post",
+          body: data,
+        };
+      },
+    }),
     updateCoupan: builder.mutation({
       query: (body) => {
         console.log("update category", body);
@@ -438,13 +476,13 @@ export const PostApi = createApi({
         };
       },
     }),
-    catogaryStatus: builder.mutation({
+    userStatus: builder.mutation({
       query: (body) => {
         console.log("update category", body);
         const { id, ...data } = body;
         console.log("update offer body data", data);
         return {
-          url: `/admin/category/category/checkstatus/${id}`,
+          url: `admin/block-user/${id}`,
           method: "post",
           body: data,
         };
@@ -720,4 +758,9 @@ export const {
   useGetHelpListQuery,
   useFilterHelpListByDateQuery,
   useUpdateHelpMutation,
+  useUpdateOrderStatusMutation,
+  useUserStatusMutation,
+  useGetFaqsListQuery,
+  useCreateFaqsMutation,
+  useUpdateFaqsMutation,
 } = PostApi;

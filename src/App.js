@@ -59,6 +59,7 @@ import DashboardNew from "./components/DashboardNew";
 import StoreSettings from "./components/configurations/StoreSettings";
 import UpcomingOrderView from "./components/UpcomingOrderView";
 import CompletedOrderView from "./components/CompletedOrderView";
+import Faqs from "./components/Faqs";
 
 function App() {
   const [progress, setProgress] = useState(0);
@@ -203,7 +204,7 @@ function App() {
           <Route
             exact
             className="active"
-            path="/completed-orders"
+            path="/completed-orders/:item"
             element={<CompletedOrderView />}
           />
 
@@ -391,6 +392,13 @@ function App() {
             path="/store-settings"
             element={<StoreSettings />}
           />
+          <Route
+            exact
+            className="active"
+            path="/faqs"
+            element={<Faqs setProgress={setProgress}/>}
+          />
+          
         </Routes>
       </BrowserRouter>
     </>
