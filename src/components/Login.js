@@ -27,9 +27,10 @@ function Login() {
         timer: 500,
       }).then(() => {
         navigate("/languageSelection");
-        setTimeout(() => {
-          window?.location?.reload();
-        }, 50);
+        // setTimeout(() => {
+        //   window?.location?.reload();
+        // }, 50);
+        window?.location?.reload();
       });
     } else if (res.isError && res.error?.data?.error) {
       Swal.fire({
