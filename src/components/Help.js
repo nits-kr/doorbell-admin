@@ -246,8 +246,12 @@ function Help() {
                                                 `${item?.userName}  item has been deleted.`,
                                                 "success"
                                               ).then(() => {
-                                                // fetchHelpList(helpAll);
-                                                window?.location?.reload();
+                                                const updatedOfferList =
+                                                  helpList.filter(
+                                                    (offer) =>
+                                                      offer._id !== item?._id
+                                                  );
+                                                setHelpList(updatedOfferList);
                                               });
                                             }
                                           });

@@ -155,7 +155,7 @@ function UpcomingOrderView() {
                         </form>
                         <div className="form-group col-10 text-center mb-0">
                           <button type="submit" className="comman_btn">
-                            <span>Update</span>
+                            <span>Update Status</span>
                           </button>
                         </div>
                       </div>
