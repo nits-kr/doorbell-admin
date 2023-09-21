@@ -55,7 +55,7 @@ function UsersManagement(props) {
       props.setProgress(10);
       setLoading(true);
       setTimeout(() => {
-        setUserListListAll(userList?.results?.list);
+        setUserListListAll(userList?.results?.list?.slice()?.reverse());
         setLoading(false);
         props.setProgress(100);
       }, 500);
@@ -89,8 +89,9 @@ function UsersManagement(props) {
           icon: "success",
           confirmButtonText: "OK",
         }).then((result) => {
+          console.log("response", result);
           if (result.isConfirmed) {
-            window.location.reload();
+            // window.location.reload();
           }
         });
       } catch (error) {}
@@ -178,11 +179,16 @@ function UsersManagement(props) {
                                         <form className="table_btns d-flex align-items-center">
                                           <div className="check_toggle">
                                             <input
-                                              type="checkbox"
-                                              defaultChecked={item?.status}
-                                              name={`check${index}`}
-                                              id={`check${index}`}
                                               className="d-none"
+                                              defaultChecked={
+                                                item.status === "true"
+                                                  ? true
+                                                  : false
+                                              }
+                                              // status: item.status === "true" ? true : false,
+                                              type="checkbox"
+                                              name={`status_${item._id}`}
+                                              id={`status_${item._id}`}
                                               onChange={(e) =>
                                                 handleCheckboxChange(
                                                   e,
@@ -190,7 +196,9 @@ function UsersManagement(props) {
                                                 )
                                               }
                                             />
-                                            <label htmlFor={`check${index}`} />
+                                            <label
+                                              htmlFor={`status_${item._id}`}
+                                            ></label>
                                           </div>
                                         </form>
                                       </td>
