@@ -126,17 +126,29 @@ function Help() {
                       action=""
                     >
                       <div className="form-group mb-0 col-5">
-                        <label htmlFor="">From</label>
-                        <input type="date" className="form-control" />
+                        <label htmlFor="fromDate">From</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="fromDate"
+                          value={fromDate}
+                          onChange={(e) => setFromDate(e.target.value)}
+                        />
                       </div>
                       <div className="form-group mb-0 col-5">
-                        <label htmlFor="">To</label>
-                        <input type="date" className="form-control" />
+                        <label htmlFor="toDate">To</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="toDate"
+                          value={toDate}
+                          onChange={(e) => setToDate(e.target.value)}
+                        />
                       </div>
                       <div className="form-group mb-0 col-auto">
-                        <button className="comman_btn">
+                        <Link className="comman_btn" disabled>
                           <span>Search</span>
-                        </button>
+                        </Link>
                       </div>
                     </form>
                     <div className="row">
