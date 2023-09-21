@@ -91,7 +91,7 @@ function UsersManagement(props) {
         }).then((result) => {
           console.log("response", result);
           if (result.isConfirmed) {
-            // window.location.reload();
+            window.location.reload();
           }
         });
       } catch (error) {}
