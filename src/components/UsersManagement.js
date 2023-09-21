@@ -14,7 +14,7 @@ function UsersManagement(props) {
   const [createMap, res] = useCreateMapMutation();
   const { data, isLoading, isError } = useGetFileQuery("file-id");
   const { data: userList } = useGetUserListAllQuery();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   console.log("down load data of user management", data);
   const [usersList, setUsersList] = useState([]);
   const [startDate, setStartDate] = useState("");

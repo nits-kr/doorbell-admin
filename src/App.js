@@ -192,7 +192,7 @@ function App() {
             exact
             className="active"
             path="/orders"
-            element={<OrderManagement />}
+            element={<OrderManagement setProgress={setProgress} />}
           />
           <Route
             exact
@@ -217,7 +217,7 @@ function App() {
             exact
             className="active"
             path="/transactions"
-            element={<TransactionManagement />}
+            element={<TransactionManagement setProgress={setProgress} />}
           />
           <Route
             exact
@@ -254,7 +254,7 @@ function App() {
             exact
             className="active"
             path="/content-management"
-            element={<ContentManagement />}
+            element={<ContentManagement setProgress={setProgress} />}
           />
           <Route
             exact

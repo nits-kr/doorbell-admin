@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Sidebar from "./Sidebar";
+import Spinner from "./Spinner";
 import {
   useFilterTransactionListByDateQuery,
   useGetTransactionListAllQuery,
 } from "../services/Post";
-function TransactionManagement() {
+function TransactionManagement(props) {
+  const [loading, setLoading] = useState(true);
   const { data: transactionListAll } = useGetTransactionListAllQuery();
   const [transactionList, setTransactionList] = useState([]);
   const [fromDate, setFromDate] = useState("");
@@ -31,8 +33,12 @@ function TransactionManagement() {
 
   useEffect(() => {
     if (transactionListAll) {
+      props.setProgress(10);
+      setLoading(true);
       console.log(transactionListAll);
       setTransactionList(transactionListAll?.results?.listaData);
+      setLoading(false);
+      props.setProgress(100);
     }
   }, [transactionListAll]);
   return (
@@ -95,33 +101,42 @@ function TransactionManagement() {
                                 <th>Action</th>
                               </tr>
                             </thead>
-                            <tbody>
-                              {transactionList?.map((item, index) => {
-                                return (
-                                  <tr key={index}>
-                                    <td>{index + 1} </td>
-                                    <td>
-                                      {item?.firstName} {item?.lastName}
-                                    </td>
-                                    <td>
-                                      {item?.createdAt?.slice(0, 10)} <br />{" "}
-                                      {item?.createdAt?.slice(12, 19)}
-                                    </td>
-                                    {/* <td> {item?.companyName} </td> */}
-                                    <td>{item?.total} SAR</td>
-                                    <td> {item?.paymentMethod} </td>
-                                    <td>
-                                      <a
-                                        className="comman_btn table_viewbtn"
-                                        href="javascript:;"
-                                      >
-                                        <span>View</span>
-                                      </a>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                            </tbody>
+                            {loading ? (
+                              <div
+                                className="d-flex align-items-end justify-content-end "
+                                style={{ marginLeft: "450px" }}
+                              >
+                                <Spinner />
+                              </div>
+                            ) : (
+                              <tbody>
+                                {transactionList?.map((item, index) => {
+                                  return (
+                                    <tr key={index}>
+                                      <td>{index + 1} </td>
+                                      <td>
+                                        {item?.firstName} {item?.lastName}
+                                      </td>
+                                      <td>
+                                        {item?.createdAt?.slice(0, 10)} <br />{" "}
+                                        {item?.createdAt?.slice(12, 19)}
+                                      </td>
+                                      {/* <td> {item?.companyName} </td> */}
+                                      <td>{item?.total} SAR</td>
+                                      <td> {item?.paymentMethod} </td>
+                                      <td>
+                                        <a
+                                          className="comman_btn table_viewbtn"
+                                          href="javascript:;"
+                                        >
+                                          <span>View</span>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            )}
                           </table>
                         </div>
                       </div>

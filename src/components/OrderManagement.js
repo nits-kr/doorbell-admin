@@ -12,8 +12,10 @@ import {
   useGetCompletedOrderListAllQuery,
   useGetOrderListAllQuery,
 } from "../services/Post";
+import Spinner from "./Spinner";
 
-function OrderManagement() {
+function OrderManagement(props) {
+  const [loading, setLoading] = useState(true);
   const { data: orderListAll } = useGetOrderListAllQuery();
   const { data: completedOrderListAll } = useGetCompletedOrderListAllQuery();
   const [deleteOrder] = useDeleteOrderListMutation();
@@ -24,7 +26,7 @@ function OrderManagement() {
   const [fromDate1, setFromDate1] = useState("");
   const [toDate1, setToDate1] = useState("");
 
-  const { data: filteredOrder, isLoading } = useFilterOrderByDateQuery(
+  const { data: filteredOrder } = useFilterOrderByDateQuery(
     {
       from: fromDate,
       to: toDate,
@@ -58,8 +60,12 @@ function OrderManagement() {
 
   useEffect(() => {
     if (orderListAll) {
+      props.setProgress(10);
+      setLoading(true);
       console.log(orderListAll);
       setOrderList(orderListAll?.results?.order?.slice()?.reverse());
+      setLoading(false);
+      props.setProgress(100);
     }
   }, [orderListAll]);
 
@@ -71,6 +77,7 @@ function OrderManagement() {
   }, [completedOrderListAll]);
   return (
     <>
+      {loading}
       <Sidebar Dash={"orders"} />
       <div className="admin_main">
         <div className="admin_main_inner">
@@ -176,130 +183,140 @@ function OrderManagement() {
                                         <th>Action</th>
                                       </tr>
                                     </thead>
-                                    <tbody>
-                                      {orderList?.map((item, index) => {
-                                        return (
-                                          <tr key={index}>
-                                            <td> {index + 1} </td>
-                                            <td>
-                                              {" "}
-                                              {item?.firstName} {item?.lastName}{" "}
-                                            </td>
-                                            <td>xyz@gmail.com</td>
-                                            <td>
-                                              {" "}
-                                              {item?.createdAt?.slice(
-                                                0,
-                                                10
-                                              )}{" "}
-                                            </td>
-                                            <td>{item?.total} SAR</td>
-                                            <td>Credit Card</td>
-                                            <td>
-                                              {" "}
-                                              <div
-                                                className={
-                                                  item?.orderStatus ===
-                                                  "Cancelled"
-                                                    ? "text-danger"
-                                                    : item?.orderStatus ===
-                                                      "Pending"
-                                                    ? "text-warning"
-                                                    : item?.orderStatus ===
-                                                      "Packed"
-                                                    ? "text-info"
-                                                    : item?.orderStatus ===
-                                                      "Approved"
-                                                    ? "text-success"
-                                                    : item?.orderStatus ===
-                                                      "Inprogress"
-                                                    ? "text-primary"
-                                                    : item?.orderStatus ===
-                                                      "Delivered"
-                                                    ? "text-secondary"
-                                                    : "text-default"
-                                                }
-                                                style={{
-                                                  background:
+                                    {loading ? (
+                                      <div
+                                        className="d-flex align-items-end justify-content-end "
+                                        style={{ marginLeft: "450px" }}
+                                      >
+                                        <Spinner />
+                                      </div>
+                                    ) : (
+                                      <tbody>
+                                        {orderList?.map((item, index) => {
+                                          return (
+                                            <tr key={index}>
+                                              <td> {index + 1} </td>
+                                              <td>
+                                                {" "}
+                                                {item?.firstName}{" "}
+                                                {item?.lastName}{" "}
+                                              </td>
+                                              <td>xyz@gmail.com</td>
+                                              <td>
+                                                {" "}
+                                                {item?.createdAt?.slice(
+                                                  0,
+                                                  10
+                                                )}{" "}
+                                              </td>
+                                              <td>{item?.total} SAR</td>
+                                              <td>Credit Card</td>
+                                              <td>
+                                                {" "}
+                                                <div
+                                                  className={
                                                     item?.orderStatus ===
                                                     "Cancelled"
-                                                      ? "#ffe5e5"
+                                                      ? "text-danger"
                                                       : item?.orderStatus ===
                                                         "Pending"
-                                                      ? "#fff6e5"
+                                                      ? "text-warning"
                                                       : item?.orderStatus ===
                                                         "Packed"
-                                                      ? "#e5f0ff"
+                                                      ? "text-info"
                                                       : item?.orderStatus ===
                                                         "Approved"
-                                                      ? "#e5ffe5"
+                                                      ? "text-success"
                                                       : item?.orderStatus ===
                                                         "Inprogress"
-                                                      ? "#e5e5ff"
+                                                      ? "text-primary"
                                                       : item?.orderStatus ===
                                                         "Delivered"
-                                                      ? "#f3f3f3"
-                                                      : "#f9f9f9",
-                                                  borderRadius: "5px",
-                                                  padding: "2px 5px",
-                                                }}
-                                              >
-                                                {item?.orderStatus}
-                                              </div>{" "}
-                                            </td>
-                                            <td>
-                                              <Link
-                                                className="comman_btn table_viewbtn"
-                                                // to="/upcoming-orders"
-                                                to={`/upcoming-orders/${encodeURIComponent(
-                                                  JSON.stringify(item)
-                                                )}`}
-                                              >
-                                                <span>View</span>
-                                              </Link>
-                                              <Link
-                                                className="comman_btn bg-danger table_viewbtn ms-1"
-                                                to="#"
-                                                onClick={() => {
-                                                  Swal.fire({
-                                                    title: "Are you sure?",
-                                                    text: "You won't be able to revert this!",
-                                                    icon: "warning",
-                                                    showCancelButton: true,
-                                                    confirmButtonColor:
-                                                      "#3085d6",
-                                                    cancelButtonColor: "#d33",
-                                                    confirmButtonText:
-                                                      "Yes, delete it!",
-                                                  }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                      deleteOrder(item?._id);
-                                                      Swal.fire(
-                                                        "Deleted!",
-                                                        `${item?._id}  item has been deleted.`,
-                                                        "success"
-                                                      ).then(() => {
-                                                        const updatedOfferList =
-                                                          orderList.filter(
-                                                            (offer) =>
-                                                              offer._id !==
-                                                              item?._id
+                                                      ? "text-secondary"
+                                                      : "text-default"
+                                                  }
+                                                  style={{
+                                                    background:
+                                                      item?.orderStatus ===
+                                                      "Cancelled"
+                                                        ? "#ffe5e5"
+                                                        : item?.orderStatus ===
+                                                          "Pending"
+                                                        ? "#fff6e5"
+                                                        : item?.orderStatus ===
+                                                          "Packed"
+                                                        ? "#e5f0ff"
+                                                        : item?.orderStatus ===
+                                                          "Approved"
+                                                        ? "#e5ffe5"
+                                                        : item?.orderStatus ===
+                                                          "Inprogress"
+                                                        ? "#e5e5ff"
+                                                        : item?.orderStatus ===
+                                                          "Delivered"
+                                                        ? "#f3f3f3"
+                                                        : "#f9f9f9",
+                                                    borderRadius: "5px",
+                                                    padding: "2px 5px",
+                                                  }}
+                                                >
+                                                  {item?.orderStatus}
+                                                </div>{" "}
+                                              </td>
+                                              <td>
+                                                <Link
+                                                  className="comman_btn table_viewbtn"
+                                                  // to="/upcoming-orders"
+                                                  to={`/upcoming-orders/${encodeURIComponent(
+                                                    JSON.stringify(item)
+                                                  )}`}
+                                                >
+                                                  <span>View</span>
+                                                </Link>
+                                                <Link
+                                                  className="comman_btn bg-danger table_viewbtn ms-1"
+                                                  to="#"
+                                                  onClick={() => {
+                                                    Swal.fire({
+                                                      title: "Are you sure?",
+                                                      text: "You won't be able to revert this!",
+                                                      icon: "warning",
+                                                      showCancelButton: true,
+                                                      confirmButtonColor:
+                                                        "#3085d6",
+                                                      cancelButtonColor: "#d33",
+                                                      confirmButtonText:
+                                                        "Yes, delete it!",
+                                                    }).then((result) => {
+                                                      if (result.isConfirmed) {
+                                                        deleteOrder(item?._id);
+                                                        Swal.fire(
+                                                          "Deleted!",
+                                                          `${item?._id}  item has been deleted.`,
+                                                          "success"
+                                                        ).then(() => {
+                                                          const updatedOfferList =
+                                                            orderList.filter(
+                                                              (offer) =>
+                                                                offer._id !==
+                                                                item?._id
+                                                            );
+                                                          setOrderList(
+                                                            updatedOfferList
                                                           );
-                                                        setOrderList(
-                                                          updatedOfferList
-                                                        );
-                                                      });
-                                                    }
-                                                  });
-                                                }}
-                                              >
-                                                <span>Delete</span>
-                                              </Link>
-                                            </td>
-                                          </tr>
-                                        );
-                                      })}
-                                    </tbody>
+                                                        });
+                                                      }
+                                                    });
+                                                  }}
+                                                >
+                                                  <span>Delete</span>
+                                                </Link>
+                                              </td>
+                                            </tr>
+                                          );
+                                        })}
+                                      </tbody>
+                                    )}
                                   </table>
                                 </div>
                               </div>

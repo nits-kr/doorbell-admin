@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
+import Spinner from "./Spinner";
 import { useGetContentListQuery } from "../services/Post";
 import { useUpdateContentMutation } from "../services/Post";
 import { useCreateContentMutation } from "../services/Post";
 
-function ContentManagement() {
+function ContentManagement(props) {
+  const [loading, setLoading] = useState(true);
   const [createContent, responseInfo] = useCreateContentMutation();
   const contentListItems = useGetContentListQuery();
   const [contentList, setContentList] = useState([]);
@@ -29,17 +31,27 @@ function ContentManagement() {
   console.log("content item id ", itemId);
   axios.defaults.headers.common["x-auth-token-admin"] =
     localStorage.getItem("token");
-  useEffect(() => {
-    const reversedList =
-      contentListItems?.data?.results?.listing?.slice().reverse() ?? [];
-    setContentList(reversedList);
-    // subContent();
-  }, [contentListItems]);
-  // const subContent = () => {
+  // useEffect(() => {
+  //   props.setProgress(10);
+  //   setLoading(true);
   //   const reversedList =
-  //     contentListItems?.data?.results?.list?.slice().reverse() ?? [];
+  //     contentListItems?.data?.results?.listing?.slice().reverse() ?? [];
   //   setContentList(reversedList);
-  // };
+  //   setLoading(false);
+  //   props.setProgress(100);
+  // }, [contentListItems]);
+
+  useEffect(() => {
+    props.setProgress(10);
+    setLoading(true);
+    setTimeout(() => {
+      const reversedList =
+        contentListItems?.data?.results?.listing?.slice().reverse() ?? [];
+      setContentList(reversedList);
+      setLoading(false);
+      props.setProgress(100);
+    }, 500);
+  }, [contentListItems]);
 
   const handleSaveChanges1 = async (e) => {
     e.preventDefault();
@@ -130,12 +142,19 @@ function ContentManagement() {
   };
   return (
     <>
+      {loading}
       <Sidebar Dash={"content-management"} />
+
       <div className="admin_main">
         <div className="admin_main_inner">
           <div className="admin_panel_data height_adjust">
-            <div className="row content_management justify-content-center">
-              {/* <div className="col-12 text-end mb-4">
+            {loading ? (
+              <div className="mt-5 pt-5">
+                <Spinner />
+              </div>
+            ) : (
+              <div className="row content_management justify-content-center">
+                {/* <div className="col-12 text-end mb-4">
                 <Link
                   to="#"
                   className="comman_btn mb-3"
@@ -145,55 +164,56 @@ function ContentManagement() {
                   <span>+ Create Content</span>
                 </Link>
               </div> */}
-              {contentList?.map((data, index) => (
-                <div className="col-12 mb-5" key={index}>
-                  <div className="row">
-                    <div className="col-md-6 d-flex align-items-stretch">
-                      <div className="row content_management_box me-0">
-                        <h2>{data?.title_en}</h2>
-                        <Link
-                          className="edit_content_btn comman_btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#staticBackdrop"
-                          to="#"
-                          onClick={() => {
-                            handleItem(data);
-                            setItemId(data?._id);
-                          }}
-                        >
-                          <span>
-                            <i className="far fa-edit me-2"></i>
-                          </span>
-                          <span>Edit</span>
-                        </Link>
-                        <p>{data?.Description_en}</p>
+                {contentList?.map((data, index) => (
+                  <div className="col-12 mb-5" key={index}>
+                    <div className="row">
+                      <div className="col-md-6 d-flex align-items-stretch">
+                        <div className="row content_management_box me-0">
+                          <h2>{data?.title_en}</h2>
+                          <Link
+                            className="edit_content_btn comman_btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop"
+                            to="#"
+                            onClick={() => {
+                              handleItem(data);
+                              setItemId(data?._id);
+                            }}
+                          >
+                            <span>
+                              <i className="far fa-edit me-2"></i>
+                            </span>
+                            <span>Edit</span>
+                          </Link>
+                          <p>{data?.Description_en}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-stretch">
-                      <div className="row content_management_box ms-0 text-end">
-                        <h2> {data?.title_ar} </h2>
-                        <Link
-                          className="edit_content_btn comman_btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#staticBackdrop1"
-                          to="#"
-                          onClick={() => {
-                            handleItem2(data);
-                            setItemId2(data?._id);
-                          }}
-                        >
-                          <span>
-                            <i className="far fa-edit me-2"></i>
-                          </span>
-                          <span>Edit</span>
-                        </Link>
-                        <p>{data?.Description_ar}</p>
+                      <div className="col-md-6 d-flex align-items-stretch">
+                        <div className="row content_management_box ms-0 text-end">
+                          <h2> {data?.title_ar} </h2>
+                          <Link
+                            className="edit_content_btn comman_btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop1"
+                            to="#"
+                            onClick={() => {
+                              handleItem2(data);
+                              setItemId2(data?._id);
+                            }}
+                          >
+                            <span>
+                              <i className="far fa-edit me-2"></i>
+                            </span>
+                            <span>Edit</span>
+                          </Link>
+                          <p>{data?.Description_ar}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
