@@ -50,6 +50,9 @@ function ResetPassword() {
         }).then((result) => {
           if (result.isConfirmed) {
             navigate("/");
+            setTimeout(() => {
+              window?.location?.reload();
+            }, 500);
           }
         });
       })
@@ -93,7 +96,7 @@ function ResetPassword() {
         {
           newPassword: password,
           confirmPassword: confirmPassword,
-          userEmail: storedUserEmail,
+          userEmail: userEmail,
         }
       );
       setErrorMessage("");
@@ -181,7 +184,7 @@ function ResetPassword() {
                           data-bs-toggle="modal"
                           data-bs-target="#staticBackdrop"
                         >
-                          Save
+                          <span>Save</span>
                         </button>
                       </div>
                     </form>
@@ -286,7 +289,9 @@ function ResetPassword() {
                   </label>
                 </div>
                 <div className="form-group mb-0 col-auto">
-                  <button className="comman_btn">Confirm & Save</button>
+                  <button className="comman_btn">
+                    <span>Confirm & Save</span>{" "}
+                  </button>
                 </div>
               </form>
             </div>
