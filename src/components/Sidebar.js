@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faList,
@@ -12,7 +13,25 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function Sidebar({ Dash }) {
+  const [profilePic, setProfilePic] = useState("");
+  console.log("profilePic", profilePic);
   const storedPic = localStorage.getItem("profilePic");
+
+  axios.defaults.headers.common["x-auth-token-admin"] =
+    localStorage.getItem("token");
+
+  const loginId = localStorage?.getItem("loginId");
+
+  useEffect(() => {
+    axios
+      .post(
+        `http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/admin-details/${loginId}`
+      )
+      .then((response) => {
+        setProfilePic(response?.data?.results?.adminDetail);
+        console.log(response.data);
+      });
+  }, []);
   return (
     <>
       <div className="admin_main">
@@ -300,7 +319,15 @@ function Sidebar({ Dash }) {
                     {storedPic ? (
                       <img src={storedPic} alt="" />
                     ) : (
-                      <img src="../assets/img/profile_img1.png" alt="" />
+                      <img
+                        src={
+                          profilePic
+                            ? profilePic?.adminProfile
+                            : "../assets/img/profile_img1.png"
+                        }
+                        alt=""
+                      />
+                      // <img src="../assets/img/profile_img1.png" alt="" />
                     )}
                   </button>
                   <ul
