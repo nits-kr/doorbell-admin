@@ -401,7 +401,7 @@ function OrderManagement(props) {
                                                 {item?.createdAt?.slice(0, 10)}
                                               </td>
                                               <td>{item?.total} SAR</td>
-                                              <td>Credit Card</td>
+                                              <td>{item?.paymentMethod}</td>
                                               <td>
                                                 <div
                                                   className={
