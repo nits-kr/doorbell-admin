@@ -482,7 +482,7 @@ export const PostApi = createApi({
         const { id, ...data } = body;
         console.log("update offer body data", data);
         return {
-          url: `admin/block-user/${id}`,
+          url: `admin/user-block-admin/${id}`,
           method: "post",
           body: data,
         };
