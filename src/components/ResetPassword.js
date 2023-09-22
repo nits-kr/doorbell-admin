@@ -43,7 +43,7 @@ function ResetPassword() {
         console.log(response.data);
         Swal.fire({
           title: "OTP submitted!",
-          text: "Your have been Submitted OTP successfully and your Profile pic has been Edited.",
+          text: "Your have been Submitted OTP successfully.",
           icon: "success",
           confirmButtonColor: "#3085d6",
           confirmButtonText: "OK",
