@@ -209,8 +209,8 @@ function OrderManagement(props) {
                                                   10
                                                 )}{" "}
                                               </td>
-                                              <td>{item?.total} SAR</td>
-                                              <td>Credit Card</td>
+                                              <td>{item?.total ? item?.total : 0}</td>
+                                              <td> {item?.paymentMethod} </td>
                                               <td>
                                                 {" "}
                                                 <div
