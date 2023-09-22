@@ -19,7 +19,7 @@ function ResetPassword() {
   const [counter, setCounter] = useState(30);
   const [intervalId, setIntervalId] = useState(null);
   const navigate = useNavigate();
-  axios.defaults.headers.common["x-auth-token-user"] =
+  axios.defaults.headers.common["x-auth-token-admin"] =
     localStorage.getItem("token");
   const storedId = localStorage.getItem("loginId");
   const storedPic = localStorage.getItem("profilePic");
@@ -33,7 +33,7 @@ function ResetPassword() {
       event.target[3].value;
     axios
       .post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/user/verifyOtp",
+        "http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/otp-verify",
         {
           userEmail: userEmail,
           otp: otp,
@@ -89,9 +89,9 @@ function ResetPassword() {
     event.preventDefault();
     try {
       await axios.post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/user/reset-password",
+        "http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/admin-resetPassword",
         {
-          password: password,
+          newPassword: password,
           confirmPassword: confirmPassword,
           userEmail: storedUserEmail,
         }

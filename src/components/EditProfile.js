@@ -15,7 +15,7 @@ function EditProfile() {
   const [counter, setCounter] = useState(30);
   const [intervalId, setIntervalId] = useState(null);
   const navigate = useNavigate();
-  axios.defaults.headers.common["x-auth-token-user"] =
+  axios.defaults.headers.common["x-auth-token-admin"] =
     localStorage.getItem("token");
   const handleFileChange = (e, key) => {
     setFormData({ ...formData, [key]: e.target.files[0] });
@@ -42,7 +42,7 @@ function EditProfile() {
         setFormData(response.data.results);
         localStorage.setItem(
           "profilePic",
-          response?.data?.results?.profileData?.profile_Pic
+          response?.data?.results?.updateData?.adminProfile
         );
         console.log(response.data.results);
         Swal.fire({
