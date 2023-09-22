@@ -108,7 +108,10 @@ function ResetPassword() {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
-          // window.location.href = "/";
+          navigate("/");
+          setTimeout(() => {
+            window?.location?.reload();
+          }, 500);
         }
       });
     } catch (error) {
@@ -181,8 +184,8 @@ function ResetPassword() {
                         <button
                           type="submit"
                           className="comman_btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#staticBackdrop"
+                          // data-bs-toggle="modal"
+                          // data-bs-target="#staticBackdrop"
                         >
                           <span>Save</span>
                         </button>

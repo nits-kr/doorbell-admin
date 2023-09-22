@@ -17,6 +17,8 @@ function EditProfile() {
   const navigate = useNavigate();
   axios.defaults.headers.common["x-auth-token-admin"] =
     localStorage.getItem("token");
+
+  const userName2 = localStorage?.getItem("userName2");
   const handleFileChange = (e, key) => {
     setFormData({ ...formData, [key]: e.target.files[0] });
   };
@@ -184,13 +186,13 @@ function EditProfile() {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="Ajay Sharma"
+                          defaultValue={userName2}
                           name="nameEn"
                           id="nameEn"
                           onChange={(e) => setUserName(e.target.value)}
                         />
                       </div>
-                      <div className="form-group col-12">
+                      {/* <div className="form-group col-12">
                         <label htmlFor="">Email Address</label>
                         <input
                           type="email"
@@ -201,7 +203,7 @@ function EditProfile() {
                           placeholder="user@gmail.com"
                           onChange={(e) => setUserEmail(e.target.value)}
                         />
-                      </div>
+                      </div> */}
                       <div className="form-group col-12 text-center">
                         <Link
                           className="comman_btn"

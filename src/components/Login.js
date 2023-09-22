@@ -16,6 +16,10 @@ function Login() {
       localStorage.setItem("loginId", res.data?.results?.verifyUser?._id);
       localStorage.setItem("token", res.data?.results?.token);
       localStorage.setItem(
+        "userName2",
+        res.data?.results?.verifyUser?.userName
+      );
+      localStorage.setItem(
         "userLoginEmail",
         res.data?.results?.verifyUser?.userEmail
       );
@@ -41,30 +45,162 @@ function Login() {
     }
   }, [res, navigate]);
 
+  // const handleSaveChanges = async (e) => {
+  //   e.preventDefault();
+  //   setUserNameError("");
+  //   setPasswordError("");
+
+  //   if (userName.trim() === "") {
+  //     setUserNameError("Username is required.");
+  //     return;
+  //   }
+  //   if (password.trim() === "") {
+  //     setPasswordError("Password is required.");
+  //     return;
+  //   }
+  //   try {
+  //     const response = await loginData({
+  //       userName: userName,
+  //       password: password,
+  //     });
+  //     console.log("response login", response);
+  //     if (response.data.error) {
+  //       Swal.fire({
+  //         title: "Incorrect Username or Password!",
+  //         icon: "error",
+  //         text: "Please check your username and password.",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+
+  //     Swal.fire({
+  //       title: "Login Failed!",
+  //       icon: "error",
+  //       text: "An error occurred during login.",
+  //     });
+  //   }
+  // };
+
+  // const handleSaveChanges = async (e) => {
+  //   e.preventDefault();
+  //   setUserNameError("");
+  //   setPasswordError("");
+
+  //   if (userName.trim() === "") {
+  //     setUserNameError("Username is required.");
+  //     return;
+  //   }
+
+  //   if (password.trim() === "") {
+  //     setPasswordError("Password is required.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await loginData({
+  //       userName: userName,
+  //       password: password,
+  //     });
+  //     console.log("response login", response);
+
+  //     if (response.data.error) {
+  //       if (response.data.message === "userName is Incorrect") {
+  //         Swal.fire({
+  //           title: "Incorrect Username!",
+  //           icon: "error",
+  //           text: "Please check your username.",
+  //         });
+  //       } else if (response.data.message === "User Password is Incorrect") {
+  //         Swal.fire({
+  //           title: "Incorrect Password!",
+  //           icon: "error",
+  //           text: "Please check your password.",
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           title: "Login Failed!",
+  //           icon: "error",
+  //           text: "An error occurred during login.",
+  //         });
+  //       }
+  //     } else {
+  //       Swal.fire({
+  //         title: "Login Successful!",
+  //         icon: "success",
+  //         text: "You have successfully logged in.",
+  //       });
+  //     }
+  //     navigate("/dashboard");
+  //     window?.location?.reload();
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+
+  //     Swal.fire({
+  //       title: "Login Failed!",
+  //       icon: "error",
+  //       text: "An error occurred during login.",
+  //     });
+  //   }
+  // };
   const handleSaveChanges = async (e) => {
     e.preventDefault();
     setUserNameError("");
     setPasswordError("");
-
+  
     if (userName.trim() === "") {
       setUserNameError("Username is required.");
       return;
     }
-
+  
     if (password.trim() === "") {
       setPasswordError("Password is required.");
       return;
     }
-
+  
     try {
       const response = await loginData({
         userName: userName,
         password: password,
       });
       console.log("response login", response);
+  
+      if (response.data.error) {
+        const errorMessage = response.data.message;
+  
+        let alertTitle, alertText;
+  
+        if (errorMessage === "userName is Incorrect") {
+          alertTitle = "Incorrect Username!";
+          alertText = "Please check your username.";
+        } else if (errorMessage === "User Password is Incorrect") {
+          alertTitle = "Incorrect Password!";
+          alertText = "Please check your password.";
+        } else {
+          alertTitle = "Login Failed!";
+          alertText = "An error occurred during login.";
+        }
+  
+        Swal.fire({
+          title: alertTitle,
+          icon: "error",
+          text: alertText,
+        });
+      } else {
+        Swal.fire({
+          title: "Login Successful!",
+          icon: "success",
+          text: "You have successfully logged in.",
+          showConfirmButton: false,
+          timer: 500,
+        }).then(() => {
+          navigate("/dashboard");
+          window?.location?.reload();
+        });
+      }
     } catch (error) {
       console.error("Login error:", error);
-      // Show a generic error message if something goes wrong
+  
       Swal.fire({
         title: "Login Failed!",
         icon: "error",
@@ -72,6 +208,7 @@ function Login() {
       });
     }
   };
+  
 
   return (
     <>

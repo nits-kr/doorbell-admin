@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Sidebar from "./Sidebar";
@@ -7,11 +7,13 @@ import Sidebar from "./Sidebar";
 function Varification() {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const refs = [useRef(), useRef(), useRef(), useRef()];
-
+  // const [userEmail, setUserEmail] = useState([]);
   const [counter, setCounter] = useState(30);
   const [intervalId, setIntervalId] = useState(null);
-  axios.defaults.headers.common["x-auth-token-user"] =
+  axios.defaults.headers.common["x-auth-token-admin"] =
     localStorage.getItem("token");
+  const navigate = useNavigate();
+  const userEmail = localStorage?.getItem("userEmail");
   const handleSubmit = (event) => {
     event.preventDefault();
     const otp =
@@ -21,9 +23,9 @@ function Varification() {
       event.target[3].value;
     axios
       .post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/user/verifyOtp",
+        "http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/otp-verify",
         {
-          userEmail: "ankita2@gmail.com",
+          userEmail: userEmail,
           otp: otp,
         }
       )
@@ -37,7 +39,8 @@ function Varification() {
           confirmButtonText: "OK",
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.href = "/reset";
+            // window.location.href = "/reset";
+            navigate("/reset")
           }
         });
       })
@@ -72,7 +75,6 @@ function Varification() {
   }, []);
   return (
     <>
-      <Sidebar />
       <section className="login_page">
         <div className="container-fluid px-0">
           <div className="row justify-content-start">
@@ -149,7 +151,7 @@ function Varification() {
                       </div>
                       <div className="form-group col-12">
                         <button type="submit" className="comman_btn">
-                          Confirm
+                          <span>Confirm</span>
                         </button>
                       </div>
                     </form>

@@ -313,7 +313,7 @@ function Sidebar({ Dash }) {
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/reset">
+                      <Link className="dropdown-item" to="/forget-password">
                         Change Password
                       </Link>
                     </li>
