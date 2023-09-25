@@ -39,8 +39,7 @@ function Varification() {
           confirmButtonText: "OK",
         }).then((result) => {
           if (result.isConfirmed) {
-            // window.location.href = "/reset";
-            navigate("/reset")
+            navigate("/reset");
           }
         });
       })
