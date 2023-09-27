@@ -21,13 +21,7 @@ function EditAttribute(props) {
     const { name, value } = event.target;
     setEditAttributes({ ...editAttributes, [name]: value });
   };
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setEditAttributes((prevAttributes) => ({
-  //     ...prevAttributes,
-  //     [name]: value,
-  //   }));
-  // };
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
