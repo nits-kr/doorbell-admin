@@ -31,15 +31,7 @@ function ContentManagement(props) {
   console.log("content item id ", itemId);
   axios.defaults.headers.common["x-auth-token-admin"] =
     localStorage.getItem("token");
-  // useEffect(() => {
-  //   props.setProgress(10);
-  //   setLoading(true);
-  //   const reversedList =
-  //     contentListItems?.data?.results?.listing?.slice().reverse() ?? [];
-  //   setContentList(reversedList);
-  //   setLoading(false);
-  //   props.setProgress(100);
-  // }, [contentListItems]);
+  
 
   useEffect(() => {
     props.setProgress(10);
