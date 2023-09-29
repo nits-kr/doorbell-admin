@@ -444,7 +444,7 @@ function Help() {
                     <span>Update</span>
                   </button>
                   <a
-                    href="javascript:;"
+                    href="#"
                     data-bs-dismiss="modal"
                     className="comman_btn ms-3 bg-danger"
                   >

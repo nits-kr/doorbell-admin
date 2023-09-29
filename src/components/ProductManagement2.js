@@ -164,7 +164,7 @@ function ProductManagement2(props) {
 
     axios
       .post(
-        `http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/update-product/${itemId}`,
+        `https://www.techgropsedev.com:2053/admin/update-product/${itemId}`,
         data
       )
       .then((response) => {
@@ -288,7 +288,7 @@ function ProductManagement2(props) {
                                           className="comman_btn table_viewbtn"
                                           data-bs-toggle="modal"
                                           data-bs-target="#edit"
-                                          href="javascript:;"
+                                          href="#"
                                           onClick={() => handleItem(item)}
                                         >
                                           <span>Edit</span>
@@ -494,16 +494,16 @@ function ProductManagement2(props) {
                         </Link>
                       );
                     })}
-                    {/* <a className="imguploded" href="javascript:;">
+                    {/* <a className="imguploded" href="#">
                       <img src="assets/img/product3.jpeg" alt="" />
                     </a>
-                    <a className="imguploded" href="javascript:;">
+                    <a className="imguploded" href="#">
                       <img src="assets/img/product3.jpeg" alt="" />
                     </a>
-                    <a className="imguploded" href="javascript:;">
+                    <a className="imguploded" href="#">
                       <img src="assets/img/product3.jpeg" alt="" />
                     </a>
-                    <a className="imguploded" href="javascript:;">
+                    <a className="imguploded" href="#">
                       <img src="assets/img/product3.jpeg" alt="" />
                     </a> */}
                   </div>
@@ -513,7 +513,7 @@ function ProductManagement2(props) {
                     <span>Update</span>
                   </button>
                   <a
-                    href="javascript:;"
+                    href="#"
                     data-bs-dismiss="modal"
                     className="comman_btn ms-3 bg-danger"
                   >

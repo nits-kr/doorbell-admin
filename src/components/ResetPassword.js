@@ -8,7 +8,7 @@ function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  axios.defaults.headers.common["x-auth-token-user"] =
+  axios.defaults.headers.common["x-auth-token-admin"] =
     localStorage.getItem("token");
   const [formData, setFormData] = useState([]);
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -32,13 +32,10 @@ function ResetPassword() {
       event.target[2].value +
       event.target[3].value;
     axios
-      .post(
-        "http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/otp-verify",
-        {
-          userEmail: userEmail,
-          otp: otp,
-        }
-      )
+      .post("https://www.techgropsedev.com:2053/admin/otp-verify", {
+        userEmail: userEmail,
+        otp: otp,
+      })
       .then((response) => {
         console.log(response.data);
         Swal.fire({
@@ -92,7 +89,7 @@ function ResetPassword() {
     event.preventDefault();
     try {
       await axios.post(
-        "http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/admin-resetPassword",
+        "https://www.techgropsedev.com:2053/admin/admin-resetPassword",
         {
           newPassword: password,
           confirmPassword: confirmPassword,

@@ -21,7 +21,7 @@ function VerificationModal() {
     event.preventDefault();
     const otp = event.target[0].value + event.target[1].value + event.target[2].value + event.target[3].value;
     axios
-      .post("http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/user/verifyOtp", {
+      .post("https://www.techgropsedev.com:2053/user/verifyOtp", {
         userEmail: "ankita2@gmail.com",
         otp: otp,
       })

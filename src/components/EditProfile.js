@@ -37,7 +37,7 @@ function EditProfile() {
     data.append("adminProfile", formData.uploadImage);
     axios
       .post(
-        `http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/edit-profile/${storedId}`,
+        `https://www.techgropsedev.com:2053/admin/edit-profile/${storedId}`,
         data
       )
       .then((response) => {
@@ -73,7 +73,7 @@ function EditProfile() {
       event.target[3].value;
     axios
       .post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/user/verifyOtp",
+        "https://www.techgropsedev.com:2053/admin/user/verifyOtp",
         {
           userEmail: userEmail,
           otp: otp,

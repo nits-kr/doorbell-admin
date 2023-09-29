@@ -2,39 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import Sidebar from "./Sidebar";
 import Spinner from "./Spinner";
 import { Link, useNavigate } from "react-router-dom";
-// import { getDatabase } from "firebase/database";
-import { getDatabase, ref, push, set } from "firebase/database";
+
 import axios from "axios";
-import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEye,
-  faPencil,
-  faTrashCan,
-  faEllipsis,
-} from "@fortawesome/free-solid-svg-icons";
-import DashboardConvaschart from "./chart/DashboardConvaschart";
-import DashboardDougnetChart from "./chart/DashboardDougnetChart";
-import Barchart from "./chart/Barchart";
-import DashboardDiscountedChart from "./chart/DashboardDiscountedChart";
+
 import {
   useFilterDashboardByDateQuery,
   useGetDashboardCountQuery,
-  useGetFileQuery,
 } from "../services/Post";
-import { useEditOrderListMutation } from "../services/Post";
-import { useDeleteOrderListMutation } from "../services/Post";
-import { useOrderAssignMutation } from "../services/Post";
+
 import { useGetDashboardAllQuery } from "../services/Post";
-import {
-  Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-} from "chart.js/auto";
-import { Radar, Bar, getElementsAtEvent } from "react-chartjs-2";
 
 function DashboardNew(props) {
   const [loading, setLoading] = useState(true);
@@ -65,9 +41,7 @@ function DashboardNew(props) {
     props.setProgress(10);
     setLoading(true);
     axios
-      .post(
-        "http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/dashboards-home"
-      )
+      .post("https://www.techgropsedev.com:2053/admin/dashboards-home")
       .then((response) => {
         setDashboardList(response?.data?.results?.listData.reverse());
         console.log(response.data);
@@ -118,10 +92,7 @@ function DashboardNew(props) {
               <div className="col-12">
                 <div className="row ms-0 mb-3 justify-content-start">
                   <div className="col-4 d-flex align-items-stretch mb-4">
-                    <a
-                      href="javascript:;"
-                      className="row dashboard_box box_design w-100"
-                    >
+                    <a href="#" className="row dashboard_box box_design w-100">
                       <div className="col-auto px-0">
                         <span className="dashboard_icon">
                           <i className="fas fa-user" />
@@ -136,10 +107,7 @@ function DashboardNew(props) {
                     </a>
                   </div>
                   <div className="col-4 d-flex align-items-stretch mb-4">
-                    <a
-                      href="javascript:;"
-                      className="row dashboard_box box_design w-100"
-                    >
+                    <a href="#" className="row dashboard_box box_design w-100">
                       <div className="col-auto px-0">
                         <span className="dashboard_icon">
                           <i className="far fa-dollar-sign" />
@@ -154,10 +122,7 @@ function DashboardNew(props) {
                     </a>
                   </div>
                   <div className="col-4 d-flex align-items-stretch mb-4">
-                    <a
-                      href="javascript:;"
-                      className="row dashboard_box box_design w-100"
-                    >
+                    <a href="#" className="row dashboard_box box_design w-100">
                       <div className="col-auto px-0">
                         <span className="dashboard_icon">
                           <i className="fas fa-file-alt" />
@@ -211,7 +176,7 @@ function DashboardNew(props) {
                       <div className="form-group mb-0 col-auto">
                         <Link
                           className="comman_btn"
-                          
+                          // onClick={handleDateFilter}
                           disabled
                         >
                           <span>Search</span>

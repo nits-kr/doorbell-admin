@@ -19,7 +19,7 @@ export default function HelpQuestion() {
     event.preventDefault();
     axios
       .post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/help/help/createQuestion",
+        "https://www.techgropsedev.com:2053/admin/help/help/createQuestion",
         {
           Question: questions.question,
           Answer: questions.message,

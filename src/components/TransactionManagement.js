@@ -127,7 +127,7 @@ function TransactionManagement(props) {
                                       <td>
                                         <a
                                           className="comman_btn table_viewbtn"
-                                          href="javascript:;"
+                                          href="#"
                                         >
                                           <span>View</span>
                                         </a>

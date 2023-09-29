@@ -24,16 +24,15 @@ function ContactUs() {
   axios.defaults.headers.common["x-auth-token-user"] =
     localStorage.getItem("token");
   const url =
-    "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/contact/contact/contactList";
-  const url2 =
-    "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/order/order/search";
+    "https://www.techgropsedev.com:2053/admin/contact/contact/contactList";
+  const url2 = "https://www.techgropsedev.com:2053/admin/order/order/search";
   useEffect(() => {
     handleView();
   }, [itemId]);
 
   const handleView = async (e) => {
     const { data } = await axios.post(
-      `http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/contact/contact/contactView/${itemId}`
+      `https://www.techgropsedev.com:2053/admin/contact/contact/contactView/${itemId}`
     );
     setViewContact(data?.results?.contactData);
   };
@@ -111,7 +110,6 @@ function ContactUs() {
               setContactList(list);
             }
           });
-          // setContactList(list);
         } else {
           setContactList([]);
           Swal.fire({

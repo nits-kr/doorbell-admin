@@ -31,9 +31,7 @@ function Login() {
         timer: 500,
       }).then(() => {
         navigate("/dashboard");
-        // setTimeout(() => {
-        //   window?.location?.reload();
-        // }, 50);
+
         window?.location?.reload();
       });
     } else if (res.isError && res.error?.data?.error) {
@@ -45,131 +43,33 @@ function Login() {
     }
   }, [res, navigate]);
 
-  // const handleSaveChanges = async (e) => {
-  //   e.preventDefault();
-  //   setUserNameError("");
-  //   setPasswordError("");
-
-  //   if (userName.trim() === "") {
-  //     setUserNameError("Username is required.");
-  //     return;
-  //   }
-  //   if (password.trim() === "") {
-  //     setPasswordError("Password is required.");
-  //     return;
-  //   }
-  //   try {
-  //     const response = await loginData({
-  //       userName: userName,
-  //       password: password,
-  //     });
-  //     console.log("response login", response);
-  //     if (response.data.error) {
-  //       Swal.fire({
-  //         title: "Incorrect Username or Password!",
-  //         icon: "error",
-  //         text: "Please check your username and password.",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Login error:", error);
-
-  //     Swal.fire({
-  //       title: "Login Failed!",
-  //       icon: "error",
-  //       text: "An error occurred during login.",
-  //     });
-  //   }
-  // };
-
-  // const handleSaveChanges = async (e) => {
-  //   e.preventDefault();
-  //   setUserNameError("");
-  //   setPasswordError("");
-
-  //   if (userName.trim() === "") {
-  //     setUserNameError("Username is required.");
-  //     return;
-  //   }
-
-  //   if (password.trim() === "") {
-  //     setPasswordError("Password is required.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await loginData({
-  //       userName: userName,
-  //       password: password,
-  //     });
-  //     console.log("response login", response);
-
-  //     if (response.data.error) {
-  //       if (response.data.message === "userName is Incorrect") {
-  //         Swal.fire({
-  //           title: "Incorrect Username!",
-  //           icon: "error",
-  //           text: "Please check your username.",
-  //         });
-  //       } else if (response.data.message === "User Password is Incorrect") {
-  //         Swal.fire({
-  //           title: "Incorrect Password!",
-  //           icon: "error",
-  //           text: "Please check your password.",
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           title: "Login Failed!",
-  //           icon: "error",
-  //           text: "An error occurred during login.",
-  //         });
-  //       }
-  //     } else {
-  //       Swal.fire({
-  //         title: "Login Successful!",
-  //         icon: "success",
-  //         text: "You have successfully logged in.",
-  //       });
-  //     }
-  //     navigate("/dashboard");
-  //     window?.location?.reload();
-  //   } catch (error) {
-  //     console.error("Login error:", error);
-
-  //     Swal.fire({
-  //       title: "Login Failed!",
-  //       icon: "error",
-  //       text: "An error occurred during login.",
-  //     });
-  //   }
-  // };
   const handleSaveChanges = async (e) => {
     e.preventDefault();
     setUserNameError("");
     setPasswordError("");
-  
+
     if (userName.trim() === "") {
       setUserNameError("Username is required.");
       return;
     }
-  
+
     if (password.trim() === "") {
       setPasswordError("Password is required.");
       return;
     }
-  
+
     try {
       const response = await loginData({
         userName: userName,
         password: password,
       });
       console.log("response login", response);
-  
+
       if (response.data.error) {
         const errorMessage = response.data.message;
-  
+
         let alertTitle, alertText;
-  
+
         if (errorMessage === "userName is Incorrect") {
           alertTitle = "Incorrect Username!";
           alertText = "Please check your username.";
@@ -180,7 +80,7 @@ function Login() {
           alertTitle = "Login Failed!";
           alertText = "An error occurred during login.";
         }
-  
+
         Swal.fire({
           title: alertTitle,
           icon: "error",
@@ -200,7 +100,7 @@ function Login() {
       }
     } catch (error) {
       console.error("Login error:", error);
-  
+
       Swal.fire({
         title: "Login Failed!",
         icon: "error",
@@ -208,7 +108,6 @@ function Login() {
       });
     }
   };
-  
 
   return (
     <>
@@ -223,7 +122,7 @@ function Login() {
                       <img src={require("../asset/img/logo.png")} alt="" />
                       {/* <img src="../assets/img/logo.png" alt="" /> */}
                     </div>
-                    <h1>Login for Admin Panel</h1>
+                    <h1>Login for Admin </h1>
                     <p>Please enter your email and password</p>
                   </div>
                   <div className="col-12">

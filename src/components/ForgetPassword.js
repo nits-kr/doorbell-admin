@@ -15,7 +15,7 @@ function ForgetPassword() {
     event.preventDefault();
     axios
       .post(
-        "http://ec2-16-171-57-155.eu-north-1.compute.amazonaws.com:3001/admin/send-mail",
+        "https://www.techgropsedev.com:2053/admin/send-mail",
         {
           userEmail: email,
         }

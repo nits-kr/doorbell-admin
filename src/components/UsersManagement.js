@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import Sidebar from "./Sidebar";
 import {
   useFilterUserByDateQuery,
-  useGetFileQuery,
   useUserStatusMutation,
 } from "../services/Post";
 import Spinner from "./Spinner";
@@ -16,11 +15,11 @@ import { useGetLatLongitudeQuery } from "../services/Post";
 import { useGetUserListAllQuery } from "../services/Post";
 function UsersManagement(props) {
   const [createMap, res] = useCreateMapMutation();
-  const { data, isLoading, isError } = useGetFileQuery("file-id");
+
   const { data: userList } = useGetUserListAllQuery();
   const [updateStatus] = useUserStatusMutation();
   const [loading, setLoading] = useState(true);
-  console.log("down load data of user management", data);
+
   const [usersList, setUsersList] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [startDate1, setStartDate1] = useState("");

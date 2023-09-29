@@ -49,7 +49,7 @@ function ProductList2(props) {
     if (searchQuery) {
       try {
         const response = await axios.post(
-          "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/product/productSearch",
+          "https://www.techgropsedev.com:2053/admin/product/productSearch",
           {
             productName_en: searchQuery,
           }
@@ -81,7 +81,7 @@ function ProductList2(props) {
     setLoading(true);
     axios
       .post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/product/productList"
+        "https://www.techgropsedev.com:2053/admin/product/productList"
       )
       .then((response) => {
         setProductList(response?.data?.results?.list.reverse());
@@ -93,7 +93,7 @@ function ProductList2(props) {
   const fetchProductList = () => {
     axios
       .post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/product/productList"
+        "https://www.techgropsedev.com:2053/admin/product/productList"
       )
       .then((response) => {
         setProductList(response?.data?.results?.list.reverse());
@@ -136,7 +136,7 @@ function ProductList2(props) {
     if (!startDate1) return;
     try {
       const { data } = await axios.post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/product/productList",
+        "https://www.techgropsedev.com:2053/admin/product/productList",
         {
           startDate1,
         }
@@ -168,7 +168,7 @@ function ProductList2(props) {
     e.preventDefault();
     axios
       .post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/product/productList",
+        "https://www.techgropsedev.com:2053/admin/product/productList",
         {
           startDate,
           endDate,

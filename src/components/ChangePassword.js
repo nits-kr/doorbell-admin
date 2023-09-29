@@ -26,7 +26,7 @@ function ChangePassword() {
     event.preventDefault();
     try {
       await axios.post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/user/reset-password/64630e21b12d35894a9bbe0c/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NDYzMGUyMWIxMmQzNTg5NGE5YmJlMGMiLCJpYXQiOjE2ODQ0NzYzODMsImV4cCI6MTY4NDczNTU4M30.oUvDW8VaMBRKlwTJR5uG35q_VQbJffq_e464EA-M9iM",
+        "https://www.techgropsedev.com:2053/admin/user/reset-password/64630e21b12d35894a9bbe0c",
         {
           password: newPassword,
           confirmPassword: confirmPassword,
@@ -51,7 +51,7 @@ function ChangePassword() {
   };
   return (
     <>
-    <Sidebar/>
+      <Sidebar />
       <div className="admin_main" id="verificationModalBtn">
         <div className="admin_main_inner">
           <div className="admin_panel_data height_adjust">
@@ -107,7 +107,11 @@ function ChangePassword() {
                         </div>
                       )}
                       <div className="form-group col-12 text-center">
-                        <button type="submit" className="comman_btn" id="verificationModalBtn">
+                        <button
+                          type="submit"
+                          className="comman_btn"
+                          id="verificationModalBtn"
+                        >
                           Save
                         </button>
                       </div>

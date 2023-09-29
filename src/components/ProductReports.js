@@ -12,7 +12,7 @@ export default function ProductReports() {
   const fetchStaffList = async () => {
     try {
       const response = await axios.post(
-        "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/reporter/reporter/list"
+        "https://www.techgropsedev.com:2053/admin/reporter/reporter/list"
       );
       setReporterList(response?.data?.results?.list?.reverse());
     } catch (error) {
@@ -25,7 +25,7 @@ export default function ProductReports() {
   }, []);
   const userList = async () => {
     const { data } = await axios.post(
-      "http://ec2-65-2-108-172.ap-south-1.compute.amazonaws.com:5000/admin/reporter/reporter/list",
+      "https://www.techgropsedev.com:2053/admin/reporter/reporter/list",
       {
         from: startDate,
         to: endDate,
